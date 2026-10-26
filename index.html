@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ECME 홈페이지 후보 3안</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+  /* Layout: short intro, then three equal site cards (thumbnail, what it is, open link). */
+  :root { --bg: #f8fafc; --card: #ffffff; --ink: #0f172a; --mute: #64748b; --line: rgba(15,23,42,.1); --acc: #4338ca; --tint: #e0e7ff; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0f1420; --card: #171d2b; --ink: #e6e9f0; --mute: #9aa3b5; --line: rgba(230,233,240,.12); --acc: #a5b4fc; --tint: #262d4d; color-scheme: dark; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 Inter, "Noto Sans KR", system-ui, sans-serif; word-break: keep-all; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 48px max(16px, env(safe-area-inset-right, 0px)) 64px max(16px, env(safe-area-inset-left, 0px)); }
+  h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; letter-spacing: -.02em; margin: 0 0 10px; text-wrap: balance; }
+  .lead { color: var(--mute); max-width: 68ch; margin: 0 0 8px; }
+  .lang { color: var(--mute); font-size: 13.5px; margin: 0 0 30px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,.06); transition: transform .25s, box-shadow .25s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.1); }
+  .thumb { display: block; aspect-ratio: 16 / 10; background: var(--tint); overflow: hidden; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .num { font-size: 12px; font-weight: 600; letter-spacing: .06em; color: var(--acc); }
+  h2 { font-size: 19px; margin: 0; }
+  .body p { margin: 0; color: var(--mute); font-size: 14px; }
+  .open { margin-top: auto; align-self: flex-start; display: inline-flex; gap: 6px; align-items: center; padding: 9px 18px; border-radius: 50px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff; text-decoration: none; font-weight: 600; font-size: 14px; }
+  .open:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+  .note { margin-top: 28px; color: var(--mute); font-size: 13px; }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ECME 홈페이지 후보 3안</h1>
+  <p class="lead">DGIST 에너지공학과 이주혁 교수 연구실(ECME Lab) 홈페이지 후보입니다. 세 사이트 모두 실제 내용으로 모든 메뉴와 페이지가 동작합니다. 각각 둘러보고 어느 쪽이 좋은지, 무엇을 고치면 좋을지 알려 주세요.</p>
+  <p class="lang">Three candidate designs for the ECME Lab homepage. Every menu and page works with real content.</p>
+  <div class="grid">
+    <article class="card">
+      <a class="thumb" href="current/"><img src="hub-current.jpg" alt="현재 사이트 첫 화면"></a>
+      <div class="body">
+        <span class="num">1 · 현재 적용 중</span>
+        <h2>Bold Editorial</h2>
+        <p>지금 dgistecme.github.io에 쓰고 있는 디자인입니다. 짙은 남색 첫 화면과 굵은 제목. <br>The design currently live.</p>
+        <a class="open" href="current/">사이트 열기 →</a>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb" href="reference/"><img src="hub-reference.jpg" alt="레퍼런스형 사이트 첫 화면"></a>
+      <div class="body">
+        <span class="num">2 · 레퍼런스형</span>
+        <h2>Research First</h2>
+        <p>흰 바탕에 파랑→보라 포인트 하나. 첫 화면 바로 아래 연구 분야 5개가 보이는 차분한 구성. <br>Calm white design, research areas up front.</p>
+        <a class="open" href="reference/">사이트 열기 →</a>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb" href="orbit/"><img src="hub-orbit.jpg" alt="Orbit형 사이트 첫 화면"></a>
+      <div class="body">
+        <span class="num">3 · Orbit형</span>
+        <h2>Orbit</h2>
+        <p>원형 단체사진을 중심으로 궤도 위에 연구 분야가 놓인 디자인. 노드 하나만 천천히 돕니다. <br>Group photo at the center of an orbit of research areas.</p>
+        <a class="open" href="orbit/">사이트 열기 →</a>
+      </div>
+    </article>
+  </div>
+  <p class="note">임시 미리보기 사이트입니다. 검색엔진에는 노출되지 않습니다.</p>
+</div>
+</body>
+</html>
