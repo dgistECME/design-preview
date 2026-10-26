@@ -1,0 +1,555 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style><title>ECME 홈페이지 시안 리뷰</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column of grouped design cards; a sticky "my picks" bar; a full-screen viewer overlay for live renders. */
+:root {
+  --bg: #f5f6f8; --surface: #ffffff; --ink: #161a23; --mute: #5d6576; --line: #e2e5eb;
+  --accent: #3d4fd6; --accent-soft: #eaedfd; --star: #d99a00; --star-soft: #fff4d6; --ok: #1e7a4a;
+  --shade: rgba(14, 18, 28, .72);
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151b; --surface: #1b1f27; --ink: #e8ebf1; --mute: #a1a9b8; --line: #2c323d;
+  --accent: #8e9bff; --accent-soft: #252b4a; --star: #f2b829; --star-soft: #3a3016; --ok: #5fc48b; --shade: rgba(0,0,0,.8); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1b1f27; --ink: #e8ebf1; --mute: #a1a9b8; --line: #2c323d;
+  --accent: #8e9bff; --accent-soft: #252b4a; --star: #f2b829; --star-soft: #3a3016; --ok: #5fc48b; --shade: rgba(0,0,0,.8); color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { text-wrap: balance; line-height: 1.25; margin: 0; }
+button, textarea, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--f-mono); }
+
+header.top { padding-block: 40px 8px; display: grid; gap: 14px; }
+header.top h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.02em; }
+.lead { color: var(--mute); max-width: 66ch; margin: 0; }
+.steps { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 0; padding: 0; list-style: none; }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; font-size: 14px; }
+.steps b { color: var(--accent); margin-right: 6px; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-block: 10px; }
+.picks { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; min-width: 0; }
+.picks .lbl { font-size: 13px; color: var(--mute); margin-right: 2px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 10px; font-size: 13px; }
+.chip.star { background: var(--star-soft); border-color: transparent; }
+.chip.empty { color: var(--mute); border-style: dashed; }
+.chip button { border: 0; background: none; padding: 0; color: var(--mute); }
+.save { margin-left: auto; font-size: 13px; color: var(--mute); }
+.save.ok { color: var(--ok); }
+.jump { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; font-size: 13.5px; text-decoration: none; color: var(--ink); }
+.btn:hover { border-color: var(--mute); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+section.group { padding-block: 34px 6px; }
+.ghead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 14px; margin-bottom: 4px; }
+.ghead h2 { font-size: 20px; font-weight: 700; }
+.motion { font-size: 12px; border-radius: 6px; padding: 2px 8px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.gnote { color: var(--mute); margin: 0 0 14px; max-width: 70ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.card.picked { border-color: var(--star); box-shadow: 0 0 0 2px var(--star-soft); }
+.thumb { display: block; border: 0; padding: 0; background: var(--line); aspect-ratio: 16 / 11; width: 100%; overflow: hidden; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform .3s; }
+.thumb:hover img { transform: scale(1.02); }
+.cbody { padding: 12px 14px 14px; display: grid; gap: 8px; }
+.ctitle { display: flex; gap: 8px; align-items: baseline; }
+.ctitle .code { font-family: var(--f-mono); font-size: 12px; color: var(--accent); font-weight: 600; flex: none; }
+.ctitle h3 { font-size: 15.5px; font-weight: 600; }
+.cdesc { color: var(--mute); font-size: 13.5px; margin: 0; }
+.cact { display: flex; gap: 6px; flex-wrap: wrap; }
+.tog { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 10px; font-size: 13px; }
+.tog[aria-pressed="true"] { background: var(--star-soft); border-color: var(--star); }
+.tog.note[data-has="1"] { border-color: var(--accent); color: var(--accent); }
+textarea { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 8px 10px; resize: vertical; min-height: 64px; font-size: 14px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 16px; }
+.panel h2 { font-size: 20px; }
+.q { display: grid; gap: 8px; }
+.q > label, .q > .qt { font-weight: 600; }
+.q small { color: var(--mute); font-weight: 400; }
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.opt input { margin-top: 4px; accent-color: var(--accent); }
+.opt span { display: grid; }
+.opt small { color: var(--mute); }
+.who { display: flex; align-items: center; gap: 8px; color: var(--mute); font-size: 13.5px; }
+.who img { width: 22px; height: 22px; border-radius: 50%; }
+
+.results { display: grid; gap: 22px; }
+.tally { display: grid; gap: 6px; }
+.trow { display: grid; grid-template-columns: minmax(0, 220px) 1fr 32px; gap: 10px; align-items: center; font-size: 14px; }
+.trow .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.track { height: 10px; background: var(--bg); border-radius: 6px; overflow: hidden; }
+.fill { height: 100%; background: var(--accent); border-radius: 6px; }
+.trow .n { text-align: right; font-variant-numeric: tabular-nums; color: var(--mute); }
+.cmts { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.cmts li { border-left: 3px solid var(--line); padding: 4px 0 4px 12px; }
+.cmts .meta { font-size: 12.5px; color: var(--mute); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.cmts .meta img { width: 18px; height: 18px; border-radius: 50%; }
+.cmts p { margin: 2px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.empty-note { color: var(--mute); margin: 0; }
+footer { padding-block: 40px 60px; color: var(--mute); font-size: 13px; }
+
+/* viewer overlay */
+.ov { position: fixed; inset: 0; z-index: 20; background: var(--shade); display: grid; grid-template-rows: auto 1fr; }
+.ov[hidden] { display: none !important; }
+.ovbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: calc(8px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 8px max(12px, env(safe-area-inset-left, 0px)); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ovt { min-width: 0; flex: 1 1 220px; }
+.ovt b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ovt span { display: block; font-size: 12.5px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ovnote { flex-basis: 100%; display: none; }
+.ovnote.open { display: block; }
+.ovnote textarea { min-height: 52px; }
+.stage { position: relative; overflow-x: hidden; overflow-y: scroll; background: var(--bg); }
+.frame { transform-origin: 0 0; width: 1440px; background: #fff; }
+.frame iframe { display: block; border: 0; width: 1440px; background: #fff; }
+.full { display: block; width: 100%; max-width: 1440px; margin: 0 auto; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: var(--surface); padding: 6px 10px; font-size: 13px; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.toprow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.lang button { padding: 6px 12px; }
+.rhead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.trnote { margin: 0; font-size: 13px; color: var(--mute); }
+.trtag { color: var(--mute); font-size: 12px; }
+@media (max-width: 640px) { .trow { grid-template-columns: minmax(0, 1fr) 80px 24px; } .save { margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top wrap">
+  <div class="toprow">
+    <h1 data-i18n="title"></h1>
+    <span class="seg lang" role="group" aria-label="Language / 언어"><button id="lKo" lang="ko">한국어</button><button id="lEn" lang="en">English</button></span>
+  </div>
+  <p class="lead" data-i18n="lead"></p>
+  <ol class="steps">
+    <li><b>1</b><span data-i18n="step1"></span></li>
+    <li><b>2</b><span data-i18n="step2"></span></li>
+    <li><b>3</b><span data-i18n="step3"></span></li>
+  </ol>
+</header>
+
+<div class="bar"><div class="wrap">
+  <div class="picks" id="picks" aria-live="polite"></div>
+  <div class="jump"><a class="btn" href="#feedback" data-i18n="jumpFeedback"></a><a class="btn" id="jumpRes" href="#results" data-i18n="jumpResults"></a></div>
+  <span class="save" id="save"></span>
+</div></div>
+
+<main class="wrap" id="groups"></main>
+
+<section class="wrap" style="padding-block: 40px 0;">
+  <div class="panel" id="feedback">
+    <h2 data-i18n="overallTitle"></h2>
+    <div class="q">
+      <span class="qt" data-i18n="dirQ"></span>
+      <div class="opts" id="dirs"></div>
+      <input id="dirNote" type="text" data-i18n-ph="dirNotePh" style="border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;">
+    </div>
+    <div class="q">
+      <label for="overall"><span data-i18n="fixQ"></span> <small data-i18n="fixHint"></small></label>
+      <textarea id="overall" rows="4" data-i18n-ph="fixPh"></textarea>
+    </div>
+    <div class="who" id="who"></div>
+  </div>
+</section>
+
+<section class="wrap" id="resultsWrap" style="padding-block: 28px 0;">
+  <div class="panel" id="results">
+    <div class="rhead">
+      <h2><span data-i18n="resultsTitle"></span> <small class="mono" id="pcount" style="font-size:14px;color:var(--mute);font-weight:500"></small></h2>
+      <button class="btn" id="trBtn" hidden></button>
+    </div>
+    <p class="trnote" id="trNote" hidden></p>
+    <div class="results" id="resbody"></div>
+  </div>
+</section>
+
+<section class="wrap" id="sendWrap" style="padding-block: 28px 0;" hidden>
+  <div class="panel" id="send">
+    <h2 data-i18n="sendTitle"></h2>
+    <p class="lead" data-i18n="sendLead" style="margin:0"></p>
+    <div class="q"><label for="rname" data-i18n="nameLabel"></label><input id="rname" type="text" data-i18n-ph="namePh" style="border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;max-width:360px;"></div>
+    <div class="q"><label for="sendText" data-i18n="previewLabel"></label><textarea id="sendText" rows="9" readonly></textarea></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn primary" id="copyBtn" data-i18n="copyBtn"></button><span class="save" id="copyMsg" style="margin-left:0"></span></div>
+  </div>
+</section>
+
+<footer class="wrap" data-i18n="footer"></footer>
+
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ovTitle">
+  <div class="ovbar">
+    <button class="btn" id="ovClose" data-i18n="close"></button>
+    <div class="ovt"><b id="ovTitle"></b><span id="ovDesc"></span></div>
+    <button class="btn" id="ovPrev" data-i18n="prev"></button>
+    <span class="mono" id="ovCount" style="font-size:13px;color:var(--mute)"></span>
+    <button class="btn" id="ovNext" data-i18n="next"></button>
+    <span class="seg" role="group"><button id="mLive" data-i18n="modeLive"></button><button id="mImg" data-i18n="modeImg"></button></span>
+    <button class="btn" id="ovReplay" data-i18n="replay"></button>
+    <button class="tog" id="ovStar" aria-pressed="false"></button>
+    <button class="tog note" id="ovNoteBtn"></button>
+    <div class="ovnote" id="ovNote"><textarea id="ovNoteText" data-i18n-ph="notePh"></textarea></div>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<script>
+const GROUPS = [{"name": "적용 중 · 라이브", "note": "지금 사이트(dgistecme.github.io)에 실제로 적용된 디자인.", "motion": "적음", "items": [{"id": "Main", "code": "C", "title": "C · Bold Editorial (현재 사이트)", "desc": "다크 네이비 에디토리얼 · dgistecme.github.io 적용 중", "title_en": "C · Bold Editorial (current site)", "desc_en": "Dark navy editorial · live at dgistecme.github.io"}], "name_en": "Live now", "note_en": "The design currently running at dgistecme.github.io.", "motion_en": "low"}, {"name": "레퍼런스 수준 (색·모션 상한)", "note": "참고 사이트(IISc NOMAD Lab) 수준으로 색과 움직임을 맞춘 최신안. 흰 바탕에 파랑→보라 포인트 하나.", "motion": "적음", "items": [{"id": "DirectionAN", "code": "AN", "title": "AN · Reference Classic", "desc": "레퍼런스 최근접, 사진 배너 오버레이, 사진 뉴스 카드", "title_en": "AN · Reference Classic", "desc_en": "Closest to the reference: photo banner with overlay, photo news cards"}, {"id": "DirectionAO", "code": "AO", "title": "AO · Clean Split", "desc": "좌우 분할 히어로, 아이콘 연구 목록", "title_en": "AO · Clean Split", "desc_en": "Split hero, icon list of research topics"}, {"id": "DirectionAP", "code": "AP", "title": "AP · Centered Statement", "desc": "가운데 제목 + 사진 + 겹친 통계", "title_en": "AP · Centered Statement", "desc_en": "Centered title + photo + overlapping stats card"}, {"id": "DirectionAQ", "code": "AQ", "title": "AQ · Sidebar Profile", "desc": "왼쪽 프로필 열, 뉴스 타임라인", "title_en": "AQ · Sidebar Profile", "desc_en": "Left profile column, news timeline"}, {"id": "DirectionAR", "code": "AR", "title": "AR · Research Tabs", "desc": "연구 탭 패널, 좌 제목/우 사진, 아이콘 통계 띠", "title_en": "AR · Research Tabs", "desc_en": "Research shown as tabs, text left / photo right, icon stats strip"}, {"id": "DirectionAS", "code": "AS", "title": "AS · News-first", "desc": "얇은 히어로 + 큰 사진 뉴스 우선, PI + Join 카드", "title_en": "AS · News-first", "desc_en": "Slim hero, then news first: big photo story, PI + join card"}, {"id": "DirectionAT", "code": "AT", "title": "AT · Photo Band", "desc": "상단 사진 3장 띠, 가운데 제목, 2단 뉴스", "title_en": "AT · Photo Band", "desc_en": "Three-photo band on top, centered title, two-column news"}, {"id": "DirectionAU", "code": "AU", "title": "AU · Card Stack", "desc": "큰 소개 카드 + 사진·최신 카드, 3카드 요약", "title_en": "AU · Card Stack", "desc_en": "Large intro card + photo and latest cards, three summary cards"}, {"id": "DirectionAV", "code": "AV", "title": "AV · Research First", "desc": "연구 5개를 히어로 바로 아래 주인공으로, 전체 사이트 후보", "title_en": "AV · Research First", "desc_en": "Research areas lead right under the hero; chosen for the full preview site"}, {"id": "DirectionAW", "code": "AW", "title": "AW · Editorial Photo-left", "desc": "사진 왼쪽 히어로, 대표 논문 띠, 키워드 칩", "title_en": "AW · Editorial Photo-left", "desc_en": "Photo-left hero, featured publications strip, keyword chips"}, {"id": "DirectionAX", "code": "AX", "title": "AX · Lab Portal", "desc": "3카드 포털 히어로, 페이지 바로가기 타일", "title_en": "AX · Lab Portal", "desc_en": "Portal hero with three cards, quick links to every page"}], "name_en": "Reference level (capped color & motion)", "note_en": "Latest drafts matched to the reference site (IISc NOMAD Lab): white page, one blue-to-violet accent.", "motion_en": "low"}, {"name": "절제된 화려함", "note": "색·사진·글꼴로 화려함을 내고 움직임은 최소로 줄인 안.", "motion": "적음", "items": [{"id": "DirectionAJ", "code": "AJ", "title": "AJ · Gradient Glass Editorial", "desc": "메시 그라데이션 + 유리 카드, 세리프, 절제 모션", "title_en": "AJ · Gradient Glass Editorial", "desc_en": "Mesh gradient + glass cards, serif type, restrained motion"}, {"id": "DirectionAK", "code": "AK", "title": "AK · Bright Photo Magazine", "desc": "사진 콜라주 + 색면, 잡지 섹션, 무한 루프 없음", "title_en": "AK · Bright Photo Magazine", "desc_en": "Photo collage + color blocks, magazine sections, no looping animation"}, {"id": "DirectionAL", "code": "AL", "title": "AL · Soft Clay 3D", "desc": "파스텔 점토 조형, 둥근 서체, 절제 모션", "title_en": "AL · Soft Clay 3D", "desc_en": "Pastel clay shapes, rounded type, restrained motion"}, {"id": "DirectionAM", "code": "AM", "title": "AM · Premium Academic", "desc": "명문대 연구실 결, 세리프, 무한 루프 없음", "title_en": "AM · Premium Academic", "desc_en": "Top-university lab feel, serif type, no looping animation"}], "name_en": "Restrained richness", "note_en": "Richness from color, photos and type, with motion kept to a minimum.", "motion_en": "low"}, {"name": "6가지 콘셉트", "note": "서로 완전히 다른 콘셉트 실험. 애니메이션이 많은 편.", "motion": "많음", "items": [{"id": "DirectionAD", "code": "AD", "title": "AD · Liquid Chrome", "desc": "gooey 액체금속 블롭, 블롭 사진, 크롬 글자, 물방울 카드", "title_en": "AD · Liquid Chrome", "desc_en": "Gooey liquid-metal blobs, blob-masked photo, chrome type, droplet cards"}, {"id": "DirectionAE", "code": "AE", "title": "AE · Isometric Lab World", "desc": "아이소메트릭 섬, 에너지 흐름, 연구 섬", "title_en": "AE · Isometric Lab World", "desc_en": "Isometric island illustration, flowing energy, research islands"}, {"id": "DirectionAF", "code": "AF", "title": "AF · Lab OS Dashboard", "desc": "글래스 OS 창, 오실로스코프, 게이지, 터미널, 알림 뉴스", "title_en": "AF · Lab OS Dashboard", "desc_en": "Glass OS windows, oscilloscope, gauges, terminal, news as notifications"}, {"id": "DirectionAG", "code": "AG", "title": "AG · Paper Cut Layers", "desc": "종이 언덕 시차, 종이 태양, 폴라로이드, 매달린 태그", "title_en": "AG · Paper Cut Layers", "desc_en": "Paper hills with parallax, paper sun, polaroids, hanging tags"}, {"id": "DirectionAH", "code": "AH", "title": "AH · Ripple Dot Grid", "desc": "점 물결 필드, 미니멀 타이포, 순차 점등 그리드", "title_en": "AH · Ripple Dot Grid", "desc_en": "Rippling dot field, minimal type, grid that lights up in sequence"}, {"id": "DirectionAI", "code": "AI", "title": "AI · Spotlight Gallery", "desc": "글자 웨이브, 필름스트립, 플립 카드, 카드 덱", "title_en": "AI · Spotlight Gallery", "desc_en": "Letter-wave headline, filmstrip, flip cards, card deck"}], "name_en": "Six concepts", "note_en": "Six very different concept experiments. Lots of animation.", "motion_en": "high"}, {"name": "Fancy · 시그니처 모션", "note": "안마다 대표 애니메이션 하나를 크게 보여주는 안.", "motion": "많음", "items": [{"id": "DirectionZ", "code": "Z", "title": "Z · Holo Prism", "desc": "크롬 헤드라인, 3D 기울기 홀로 포일 카드, 유리 구슬", "title_en": "Z · Holo Prism", "desc_en": "Chrome headline, 3D tilting holographic foil card, glass spheres"}, {"id": "DirectionAA", "code": "AA", "title": "AA · Exploded Device", "desc": "나노발전기 4층 3D 분해, 전압 파형, 자동 아코디언", "title_en": "AA · Exploded Device", "desc_en": "Nanogenerator layers exploding in 3D, voltage waveform, auto accordion"}, {"id": "DirectionAB", "code": "AB", "title": "AB · Energy Field", "desc": "입자 흡수 허브, 단어 회전, 숫자 카운터, 타임라인", "title_en": "AB · Energy Field", "desc_en": "Particles flowing into a photo hub, rotating words, counters, timeline"}, {"id": "DirectionAC", "code": "AC", "title": "AC · Cinematic Type", "desc": "사진 채운 430px ECME, 이중 기울기 마퀴, 컬러 블록", "title_en": "AC · Cinematic Type", "desc_en": "430px \"ECME\" filled with a photo, two tilted marquees, color blocks"}], "name_en": "Fancy · signature motion", "note_en": "Each draft shows off one big signature animation.", "motion_en": "high"}, {"name": "레퍼런스 결 + 세련된 모션", "note": "밝은 그라데이션에 세련된 애니메이션을 더한 안.", "motion": "보통", "items": [{"id": "DirectionV", "code": "V", "title": "V · Prism Mesh", "desc": "유동 메시 그라데이션, 단어 리빌, 회전 테두리, 세로 뉴스 마퀴", "title_en": "V · Prism Mesh", "desc_en": "Flowing mesh gradient, word reveal, rotating border, vertical news ticker"}, {"id": "DirectionW", "code": "W", "title": "W · Liquid Glass", "desc": "유동 그라데이션 스테이지, 글래스 패널 빛줄기, 모프 블롭 사진, 가로 마퀴", "title_en": "W · Liquid Glass", "desc_en": "Flowing gradient stage, glass panel light sweep, morphing photo, horizontal ticker"}, {"id": "DirectionX", "code": "X", "title": "X · Kinetic Spotlight", "desc": "초대형 타이포 스포트라이트, 펄스 라인 + 이동 광점, 프로그레스 링", "title_en": "X · Kinetic Spotlight", "desc_en": "Huge spotlight type, pulse line with moving dot, progress rings"}, {"id": "DirectionY", "code": "Y", "title": "Y · Flow Ribbons", "desc": "점선 리본 흐름, 평행사변형 사진, 파형 노드 + 왕복 광점, 3D 플립 뉴스", "title_en": "Y · Flow Ribbons", "desc_en": "Flowing dashed ribbons, slanted photo, waveform nodes, 3D flip news"}], "name_en": "Reference feel + refined motion", "note_en": "Bright gradients with polished animation.", "motion_en": "medium"}, {"name": "레퍼런스 결 (밝고 화려)", "note": "참고 사이트의 밝고 화려한 결을 처음 시도한 안.", "motion": "보통", "items": [{"id": "DirectionS", "code": "S", "title": "S · Glow Cards", "desc": "풀블리드 사진 히어로, 그라데이션 제목, 글래스 카드, 컬러 태그", "title_en": "S · Glow Cards", "desc_en": "Full-bleed photo hero, gradient titles, glass cards, color tags"}, {"id": "DirectionT", "code": "T", "title": "T · Aurora", "desc": "파스텔 블롭, 라운드 사진 + 부유 통계 칩, 5색 타일", "title_en": "T · Aurora", "desc_en": "Pastel blobs, rounded photo with floating stat chips, five-color tiles"}, {"id": "DirectionU", "code": "U", "title": "U · Spectrum", "desc": "곡선 사진 카드, 스펙트럼 테두리, 캐러셀", "title_en": "U · Spectrum", "desc_en": "Curved photo card, spectrum borders, carousel"}], "name_en": "Reference feel (bright & vivid)", "note_en": "First attempts at the reference site's bright, vivid feel.", "motion_en": "medium"}, {"name": "Orbit 계열 (기하 모티프 + 애니메이션)", "note": "궤도·파형·육각 격자·신호 같은 기하 모티프에 애니메이션.", "motion": "보통", "items": [{"id": "DirectionN", "code": "N", "title": "N · Orbit", "desc": "동심원 링 + 원형 사진, 공전 노드 애니메이션", "title_en": "N · Orbit", "desc_en": "Concentric rings + round photo, orbiting nodes"}, {"id": "DirectionP", "code": "P", "title": "P · Waveform", "desc": "사인파 + 알약형 사진, 파형 위 연구 노드", "title_en": "P · Waveform", "desc_en": "Sine waves + pill-shaped photo, research nodes on the waveform"}, {"id": "DirectionQ", "code": "Q", "title": "Q · Hex Lattice", "desc": "육각 격자 + 육각 사진/셀", "title_en": "Q · Hex Lattice", "desc_en": "Hex lattice + hexagonal photo and cells"}, {"id": "DirectionR", "code": "R", "title": "R · Signal Field", "desc": "점 필드 + 신호 링 퍼짐 + 통계 바", "title_en": "R · Signal Field", "desc_en": "Dot field + expanding signal rings + stat bars"}, {"id": "DirectionNA", "code": "NA", "title": "NA · Orbit Refined", "desc": "원형 사진 중심 궤도 + 연구 5칩, 절제 모션, 전체 사이트 후보", "title_en": "NA · Orbit Refined", "desc_en": "Round photo at the orbit center with research chips; chosen for the full preview site"}, {"id": "DirectionNB", "code": "NB", "title": "NB · Orbit Split", "desc": "분할 히어로 + 궤도 다이어그램 연구", "title_en": "NB · Orbit Split", "desc_en": "Split hero, research shown as an orbit diagram"}, {"id": "DirectionNC", "code": "NC", "title": "NC · Energy Loop", "desc": "연구를 하나의 고리로 잇는 다이어그램", "title_en": "NC · Energy Loop", "desc_en": "Research areas connected as one energy loop"}], "name_en": "Orbit family (geometric motifs + animation)", "note_en": "Geometric motifs (orbits, waveforms, hex lattice, signals) with animation.", "motion_en": "medium"}, {"name": "흰 배경 · 강한 구성", "note": "흰 바탕에 큰 글씨와 강한 레이아웃.", "motion": "적음", "items": [{"id": "DirectionM", "code": "M", "title": "M · Overlap Editorial", "desc": "순백, 초대형 아웃라인 타이포 + 기울어진 사진 겹침", "title_en": "M · Overlap Editorial", "desc_en": "Pure white, huge outline type overlapping a tilted photo"}, {"id": "DirectionO", "code": "O", "title": "O · Vertical Rail", "desc": "순백, 세로 레일 + 굵은 룰 + 흑백 사진", "title_en": "O · Vertical Rail", "desc_en": "Pure white, vertical rail, heavy rules, black-and-white photo"}], "name_en": "White · bold layout", "note_en": "White page with big type and strong layout.", "motion_en": "low"}, {"name": "흰 배경 · 순백", "note": "색 없이 선과 여백, 구조로만 만든 안.", "motion": "적음", "items": [{"id": "DirectionJ", "code": "J", "title": "J · Hairline Magazine", "desc": "순백, 회색 룰선, 잡지 3단", "title_en": "J · Hairline Magazine", "desc_en": "Pure white, grey hairlines, three-column magazine"}, {"id": "DirectionK", "code": "K", "title": "K · Serif Editorial", "desc": "순백, 세리프 대문장, 여백", "title_en": "K · Serif Editorial", "desc_en": "Pure white, large serif sentence, generous whitespace"}, {"id": "DirectionL", "code": "L", "title": "L · Bento Cards", "desc": "순백, 테두리 카드 그리드", "title_en": "L · Bento Cards", "desc_en": "Pure white, bordered bento card grid"}], "name_en": "White · pure", "note_en": "No color: built only from lines, whitespace and structure.", "motion_en": "low"}, {"name": "밝은 톤", "note": "하늘색·민트·아이보리 같은 밝은 톤.", "motion": "적음", "items": [{"id": "DirectionG", "code": "G", "title": "G · Sky Airy", "desc": "흰+하늘색, 라운드 사진, 파스텔 타일", "title_en": "G · Sky Airy", "desc_en": "White + sky blue, rounded photo, pastel tiles"}, {"id": "DirectionH", "code": "H", "title": "H · Mint Lab", "desc": "민트/라임 밴드, 유기 곡선 사진, 칩", "title_en": "H · Mint Lab", "desc_en": "Mint/lime bands, organic photo crop, chips"}, {"id": "DirectionI", "code": "I", "title": "I · Warm Sunlight", "desc": "아이보리+코랄, 세리프 제목", "title_en": "I · Warm Sunlight", "desc_en": "Ivory + coral, serif headings"}], "name_en": "Light tones", "note_en": "Light tones such as sky blue, mint and ivory.", "motion_en": "low"}, {"name": "초기 탐색", "note": "초기에 검토한 방향들과 이전 Wix 사이트 재현.", "motion": "적음", "items": [{"id": "DirectionD", "code": "D", "title": "D · Swiss Grid", "desc": "흰/검/빨강 점, 모노 라벨", "title_en": "D · Swiss Grid", "desc_en": "White/black with a red dot, mono labels"}, {"id": "DirectionE", "code": "E", "title": "E · Paper Journal", "desc": "크림 종이, 세리프, 학술지", "title_en": "E · Paper Journal", "desc_en": "Cream paper, serif, journal style"}, {"id": "DirectionF", "code": "F", "title": "F · Photo Magazine", "desc": "세로 대제목 + 사진 모자이크 + 노랑", "title_en": "F · Photo Magazine", "desc_en": "Vertical headline + photo mosaic + yellow accent"}, {"id": "DirectionA", "code": "A", "title": "A · Classic Academic", "desc": "네이비+금색", "title_en": "A · Classic Academic", "desc_en": "Navy + gold"}, {"id": "DirectionB", "code": "B", "title": "B · Clean Modern", "desc": "흰 배경, 둥근 카드", "title_en": "B · Clean Modern", "desc_en": "White page, rounded cards"}, {"id": "Previous", "code": "이전", "title": "이전 · Wix 재현", "desc": "이전 Wix 사이트를 그대로 옮긴 버전", "title_en": "Prev · Wix rebuild", "desc_en": "The old Wix site, rebuilt as-is"}], "name_en": "Early exploration", "note_en": "Early directions, plus a rebuild of the old Wix site.", "motion_en": "low"}];
+const SHARE = true;  // public static copy: no shared storage; reviewers copy their feedback and send it
+const I18N = {
+  ko: {
+    title: 'ECME 홈페이지 시안 리뷰',
+    lead: 'DGIST 에너지공학과 이주혁 교수 연구실(ECME Lab) 홈페이지를 새로 다듬고 있습니다. 지금까지 만든 시안 54개를 방향별로 모았습니다. 둘러보고 마음에 드는 안과 방향, 고치면 좋을 점을 남겨 주세요. 의견은 자동 저장되고, 아래 "모두의 의견"에서 함께 볼 수 있습니다.',
+    step1: '썸네일을 눌러 실제 화면 보기 (애니메이션 재생)', step2: '좋은 안에 ★ — 최대 3개', step3: '안마다 의견, 마지막에 방향과 고칠 점',
+    jumpFeedback: '방향·고칠 점', jumpResults: '모두의 의견', myPicks: '내가 고른 안', emptySlot: '빈 자리', unpick: '선택 취소',
+    motion: '움직임', like: '☆ 좋아요', liked: '★ 좋아요', note: '의견', noted: '의견 ✓', view: '크게 보기', viewAria: '크게 보기',
+    notePh: '이 안에서 좋은 점, 고칠 점',
+    overallTitle: '전체 의견', dirQ: '어떤 방향이 가장 좋나요?', dirNotePh: '기타를 골랐거나 덧붙일 말이 있으면 적어 주세요',
+    fixQ: '고르신 안이나 방향에서 고치면 좋을 점', fixHint: '— 색, 글씨, 사진, 움직임, 들어갈 내용 등 무엇이든', fixPh: '예: 움직임은 더 줄이고, 연구 분야 설명이 첫 화면에 보였으면 좋겠어요.',
+    savedAs: '{name} 이름으로 저장됩니다. 언제든 고칠 수 있어요.', signedIn: '로그인한 사용자',
+    resultsTitle: '모두의 의견', participants: '{n}명 참여',
+    noneYet: '아직 남긴 의견이 없습니다. 첫 의견을 남겨 주세요.', noShared: '공유 저장소에 연결되지 않아 다른 사람의 의견을 볼 수 없습니다.',
+    topPicks: '많이 고른 안', noPicks: '아직 고른 안이 없습니다.', dirTally: '선호 방향', fixList: '고치면 좋을 점', perDesign: '시안별 의견', nothing: '아직 없습니다.', noName: '이름 없음',
+    footer: 'ECME Lab · DGIST 에너지공학과 · 시안은 실제 사이트가 아닌 디자인 초안입니다.',
+    close: '✕ 닫기', prev: '← 이전', next: '다음 →', modeLive: '실제 화면', modeImg: '이미지', replay: '↻ 다시 재생', fullImg: '전체 화면 이미지',
+    loading: '불러오는 중…', saving: '저장 중…', saved: '저장됨 · 모두에게 공유', localOnly: '이 기기에만 저장됨', localNoId: '이 기기에만 저장됨 (로그인 정보를 확인할 수 없음)',
+    saveFail: '저장하지 못했어요. 이 기기에는 남아 있어요.', autoSave: '의견을 남기면 자동 저장됩니다',
+    trBtn: '의견을 한국어로 번역', trBusy: '번역 중…', trShow: '원문 보기', trHide: '번역 보기',
+    trInfo: 'Claude가 번역합니다. 처음 한 번 사용 허락을 묻고, 본인 Claude 사용량이 쓰입니다.', trDone: '번역됨 · Claude', trOff: '이 계정에서는 번역 기능을 쓸 수 없어요.',
+    trLimit: '잠시 후 다시 시도해 주세요. 사용량 한도에 걸렸을 수 있어요.', trFail: '번역하지 못했어요. 다시 눌러 주세요.', trNothing: '번역할 의견이 없어요.', trLabel: '번역',
+    leadShare: 'DGIST 에너지공학과 이주혁 교수 연구실(ECME Lab) 홈페이지를 새로 다듬고 있습니다. 지금까지 만든 시안 54개를 방향별로 모았습니다. 둘러보고 마음에 드는 안과 방향, 고치면 좋을 점을 남겨 주세요. 입력한 내용은 이 브라우저에 저장되고, 맨 아래 "의견 보내기"에서 복사해 보내 주시면 됩니다.',
+    jumpSend: '의견 보내기', savedLocal: '이 브라우저에 저장됨', sendTitle: '의견 보내기',
+    sendLead: '이름을 적고 "의견 복사"를 누른 뒤, 이 페이지를 보내 준 사람에게 카톡이나 메일로 붙여넣어 보내 주세요.',
+    nameLabel: '이름', namePh: '예: 홍길동', previewLabel: '보낼 내용 미리보기', copyBtn: '의견 복사',
+    copied: '복사됐어요. 카톡이나 메일에 붙여넣어 보내 주세요.', copyFail: '자동 복사가 안 돼서 내용을 선택해 두었어요. Ctrl+C(휴대폰은 길게 눌러 복사)로 복사해 주세요.',
+    sHead: '[ECME 홈페이지 시안 의견]', sName: '이름', sPicks: '★ 좋은 안', sDir: '선호 방향', sFix: '고칠 점', sNotes: '시안별 의견', sNone: '(없음)',
+    dirs: [['calm', '차분·신뢰형', '흰 바탕 + 포인트 색 하나 (AN, AO, AP, AQ, AM 등)'], ['photo', '사진·잡지형', '사진과 큰 글씨 중심 (F, AK, AC, M 등)'], ['bright', '밝고 컬러풀', '그라데이션, 유리 카드 (S, T, U, V, W, AJ 등)'], ['geo', '기하·모션형', '궤도, 파형, 격자 모티프 (N, P, Q, R, AH 등)'], ['dark', '다크 에디토리얼', '지금 사이트 (C)'], ['other', '기타', '아래에 직접 적어 주세요']],
+  },
+  en: {
+    title: 'ECME Homepage Design Review',
+    lead: 'We are redesigning the homepage of ECME Lab (Prof. Ju-Hyuck Lee, Dept. of Energy Science & Engineering, DGIST). Here are all 54 drafts so far, grouped by direction. Look around, then tell us which drafts and direction you like and what should change. Your input saves automatically and appears under "Everyone\'s feedback" below.',
+    step1: 'Click a thumbnail to see the real page (animations play)', step2: 'Star the ones you like ★ — up to 3', step3: 'Comment on drafts, then pick a direction and what to fix',
+    jumpFeedback: 'Direction & fixes', jumpResults: 'Everyone\'s feedback', myPicks: 'My picks', emptySlot: 'Empty', unpick: 'Remove pick',
+    motion: 'Motion', like: '☆ Like', liked: '★ Liked', note: 'Comment', noted: 'Comment ✓', view: 'View large', viewAria: 'View large',
+    notePh: 'What works and what to fix in this draft',
+    overallTitle: 'Overall feedback', dirQ: 'Which direction do you like best?', dirNotePh: 'If you chose Other, or want to add something, write it here',
+    fixQ: 'What should change in the drafts or direction you chose?', fixHint: '— color, type, photos, motion, content, anything', fixPh: 'e.g. Less motion, and show the research areas on the first screen.',
+    savedAs: 'Saved under your name, {name}. You can edit it anytime.', signedIn: 'signed-in user',
+    resultsTitle: 'Everyone\'s feedback', participants: '{n} people',
+    noneYet: 'No feedback yet. Be the first.', noShared: 'Not connected to shared storage, so other people\'s feedback can\'t be shown.',
+    topPicks: 'Most-picked drafts', noPicks: 'No picks yet.', dirTally: 'Preferred direction', fixList: 'What to fix', perDesign: 'Comments on drafts', nothing: 'None yet.', noName: 'No name',
+    footer: 'ECME Lab · Dept. of Energy Science & Engineering, DGIST · These are design drafts, not the live site.',
+    close: '✕ Close', prev: '← Prev', next: 'Next →', modeLive: 'Live page', modeImg: 'Image', replay: '↻ Replay', fullImg: 'full-page image',
+    loading: 'Loading…', saving: 'Saving…', saved: 'Saved · shared with everyone', localOnly: 'Saved on this device only', localNoId: 'Saved on this device only (couldn\'t confirm your sign-in)',
+    saveFail: 'Couldn\'t save. It\'s still kept on this device.', autoSave: 'Your feedback saves automatically',
+    trBtn: 'Translate feedback to English', trBusy: 'Translating…', trShow: 'Show original', trHide: 'Show translation',
+    trInfo: 'Claude translates. It asks your permission once and uses your own Claude usage.', trDone: 'Translated · Claude', trOff: 'Translation isn\'t available for this account.',
+    trLimit: 'Please try again in a moment. You may have hit a usage limit.', trFail: 'Couldn\'t translate. Please try again.', trNothing: 'Nothing to translate.', trLabel: 'translated',
+    leadShare: 'We are redesigning the homepage of ECME Lab (Prof. Ju-Hyuck Lee, Dept. of Energy Science & Engineering, DGIST). Here are all 54 drafts so far, grouped by direction. Look around, then tell us which drafts and direction you like and what should change. Your input is kept in this browser; at the bottom, use "Send feedback" to copy it and send it to us.',
+    jumpSend: 'Send feedback', savedLocal: 'Saved in this browser', sendTitle: 'Send feedback',
+    sendLead: 'Enter your name, press "Copy feedback", then paste it into a message or email to the person who shared this page.',
+    nameLabel: 'Name', namePh: 'e.g. Jane Doe', previewLabel: 'Preview of what you will send', copyBtn: 'Copy feedback',
+    copied: 'Copied. Paste it into a message or email.', copyFail: 'Automatic copy did not work, so the text is selected. Press Ctrl+C (or long-press to copy on a phone).',
+    sHead: '[ECME homepage draft feedback]', sName: 'Name', sPicks: '★ Liked drafts', sDir: 'Preferred direction', sFix: 'What to fix', sNotes: 'Comments on drafts', sNone: '(none)',
+    dirs: [['calm', 'Calm & credible', 'White page + one accent color (AN, AO, AP, AQ, AM…)'], ['photo', 'Photo & magazine', 'Led by photos and big type (F, AK, AC, M…)'], ['bright', 'Bright & colorful', 'Gradients, glass cards (S, T, U, V, W, AJ…)'], ['geo', 'Geometric & motion', 'Orbit, waveform, lattice motifs (N, P, Q, R, AH…)'], ['dark', 'Dark editorial', 'The current site (C)'], ['other', 'Other', 'Write it below']],
+  },
+};
+const MAX_PICKS = 3;
+const ITEMS = []; GROUPS.forEach((g, gi) => g.items.forEach((it) => ITEMS.push(Object.assign({ g: gi }, it))));
+const byId = Object.fromEntries(ITEMS.map((it) => [it.id, it]));
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+let lang = 'ko';
+try { lang = localStorage.getItem('ecme-review-lang') || ((navigator.language || 'ko').toLowerCase().startsWith('ko') ? 'ko' : 'en'); } catch (e) {}
+const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k]) ?? I18N.ko[k] ?? k; if (vars) for (const v in vars) s = s.replace('{' + v + '}', vars[v]); return s; };
+const L = (obj, key) => (lang === 'en' && obj[key + '_en']) ? obj[key + '_en'] : obj[key];
+const shortTitle = (it) => L(it, 'title').replace(it.code + ' · ', '');
+
+let uid = null, db = null, mine = { picks: [], direction: '', dirNote: '', overall: '', notes: {}, name: '' }, all = {}, loadedMine = false, statusKey = 'loading', statusOk = false;
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach((n) => { n.textContent = t(n.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-ph]').forEach((n) => { n.placeholder = t(n.dataset.i18nPh); });
+  $('lKo').setAttribute('aria-pressed', lang === 'ko'); $('lEn').setAttribute('aria-pressed', lang === 'en');
+  document.title = t('title');
+  if (SHARE) { document.querySelector('.lead').textContent = t('leadShare'); $('jumpRes').textContent = t('jumpSend'); $('jumpRes').href = '#send'; }
+  renderGroups(); renderDirs(); paintMine(); status(statusKey, statusOk); renderMe(); renderResults(); if (SHARE) renderSend();
+  if (!$('ov').hidden) paintOvState();
+}
+function setLang(l) { if (l === lang) return; lang = l; try { localStorage.setItem('ecme-review-lang', l); } catch (e) {} applyLang(); }
+$('lKo').onclick = () => setLang('ko'); $('lEn').onclick = () => setLang('en');
+
+/* ---------- cards ---------- */
+function renderGroups() {
+  const root = $('groups'); root.textContent = '';
+  GROUPS.forEach((g) => {
+    const s = el('section', 'group'); const h = el('div', 'ghead');
+    h.append(el('h2', null, L(g, 'name')), el('span', 'motion', t('motion') + ' ' + L(g, 'motion')));
+    s.append(h, el('p', 'gnote', L(g, 'note')));
+    const grid = el('div', 'grid');
+    g.items.forEach((it) => {
+      const c = el('article', 'card'); c.dataset.id = it.id;
+      const th = el('button', 'thumb'); th.setAttribute('aria-label', L(it, 'title') + ' — ' + t('viewAria'));
+      const img = el('img'); img.src = 't/' + it.id + '.jpg'; img.alt = ''; img.loading = 'lazy'; th.append(img);
+      th.onclick = () => openViewer(it.id);
+      const b = el('div', 'cbody'); const ti = el('div', 'ctitle');
+      ti.append(el('span', 'code', it.code), el('h3', null, shortTitle(it)));
+      const act = el('div', 'cact');
+      const star = el('button', 'tog'); star.dataset.star = it.id; star.onclick = () => togglePick(it.id);
+      const nb = el('button', 'tog note'); nb.dataset.noteBtn = it.id;
+      const ta = el('textarea'); ta.id = 'note-' + it.id; ta.hidden = true; ta.placeholder = t('notePh');
+      ta.oninput = () => setNote(it.id, ta.value);
+      nb.onclick = () => { ta.hidden = !ta.hidden; if (!ta.hidden) ta.focus(); };
+      const view = el('button', 'tog', t('view')); view.onclick = () => openViewer(it.id);
+      act.append(star, nb, view);
+      b.append(ti, el('p', 'cdesc', L(it, 'desc')), act, ta);
+      c.append(th, b); grid.append(c);
+    });
+    s.append(grid); root.append(s);
+  });
+}
+function paintMine() {
+  document.querySelectorAll('[data-star]').forEach((b) => {
+    const on = mine.picks.includes(b.dataset.star);
+    b.setAttribute('aria-pressed', on); b.textContent = on ? t('liked') : t('like');
+    b.closest('.card').classList.toggle('picked', on);
+  });
+  document.querySelectorAll('[data-note-btn]').forEach((b) => { const v = mine.notes[b.dataset.noteBtn] || ''; b.dataset.has = v ? '1' : '0'; b.textContent = v ? t('noted') : t('note'); });
+  ITEMS.forEach((it) => { const ta = $('note-' + it.id); if (ta && document.activeElement !== ta) { ta.value = mine.notes[it.id] || ''; if (ta.value) ta.hidden = false; } });
+  const p = $('picks'); p.textContent = ''; p.append(el('span', 'lbl', t('myPicks')));
+  mine.picks.forEach((id) => { const it = byId[id]; if (!it) return; const c = el('span', 'chip star'); const a = el('button', null, it.code + ' ' + shortTitle(it)); a.style.color = 'inherit'; a.onclick = () => openViewer(id); const x = el('button', null, '✕'); x.setAttribute('aria-label', L(it, 'title') + ' — ' + t('unpick')); x.onclick = () => togglePick(id); c.append('★', a, x); p.append(c); });
+  for (let k = mine.picks.length; k < MAX_PICKS; k++) p.append(el('span', 'chip empty', t('emptySlot')));
+  document.querySelectorAll('input[name="dir"]').forEach((r) => { r.checked = r.value === mine.direction; });
+  if (document.activeElement !== $('dirNote')) $('dirNote').value = mine.dirNote || '';
+  if (document.activeElement !== $('overall')) $('overall').value = mine.overall || '';
+  if (!$('ov').hidden) paintOvState();
+}
+function togglePick(id) {
+  const i = mine.picks.indexOf(id);
+  if (i >= 0) mine.picks.splice(i, 1);
+  else { if (mine.picks.length >= MAX_PICKS) mine.picks.shift(); mine.picks.push(id); }
+  paintMine(); queueSave();
+}
+function setNote(id, v) { if (v.trim()) mine.notes[id] = v; else delete mine.notes[id]; paintMine(); queueSave(); }
+
+/* ---------- direction + overall ---------- */
+function renderDirs() {
+  const box = $('dirs'); box.textContent = '';
+  t('dirs').forEach(([v, tt, s]) => { const l = el('label', 'opt'); const r = el('input'); r.type = 'radio'; r.name = 'dir'; r.value = v; r.id = 'dir-' + v; r.checked = mine.direction === v; r.onchange = () => { mine.direction = v; queueSave(); }; const sp = el('span'); sp.append(el('b', null, tt), el('small', null, s)); l.append(r, sp); box.append(l); });
+}
+$('dirNote').oninput = (e) => { mine.dirNote = e.target.value; queueSave(); };
+$('overall').oninput = (e) => { mine.overall = e.target.value; queueSave(); };
+async function renderMe() {
+  if (SHARE) return;
+  try {
+    const me = window.claude && window.claude.user ? await window.claude.user.me() : null;
+    const w = $('who'); w.textContent = '';
+    if (me) { const i = el('img'); i.src = me.avatarUrl; i.alt = ''; w.append(i, el('span', null, t('savedAs', { name: me.name || t('signedIn') }))); }
+  } catch (e) {}
+}
+
+/* ---------- saving ---------- */
+let saveTimer = null;
+function status(key, ok) { statusKey = key; statusOk = !!ok; const s = $('save'); s.textContent = t(key); s.classList.toggle('ok', !!ok); }
+function queueSave() { status('saving'); clearTimeout(saveTimer); saveTimer = setTimeout(save, 700); }
+async function save() {
+  if (SHARE) { try { localStorage.setItem('ecme-review', JSON.stringify(mine)); } catch (e) {} status('savedLocal', true); renderSend(); return; }
+  const body = { picks: mine.picks.slice(0, MAX_PICKS), direction: mine.direction, dirNote: mine.dirNote.slice(0, 2000), overall: mine.overall.slice(0, 4000), notes: mine.notes, updatedAt: new Date().toISOString() };
+  try { localStorage.setItem('ecme-review', JSON.stringify(body)); } catch (e) {}
+  if (!db || !uid) { status(uid === null && db ? 'localNoId' : 'localOnly'); return; }
+  try { await db.doc('reviews/' + uid).set(body); status('saved', true); }
+  catch (e) {
+    if (e && e.code === 'unavailable') { setTimeout(save, 1500 + Math.random() * 1000); return; }
+    status('saveFail');
+  }
+}
+
+/* ---------- comment translation (Claude, on request) ---------- */
+const TR = { ko: {}, en: {} };  // original text -> translation, per target language
+let trShowOrig = false, trBusy = false, trDisabled = false;
+function commentTexts() {
+  const out = new Set();
+  Object.values(all).forEach((d) => { if (!d) return; [d.overall, d.dirNote].forEach((x) => { if (x && x.trim()) out.add(x); }); Object.values(d.notes || {}).forEach((x) => { if (x && x.trim()) out.add(x); }); });
+  return [...out];
+}
+function paintTrButton() {
+  const b = $('trBtn'), texts = commentTexts();
+  b.hidden = trDisabled || typeof (window.claude && window.claude.sample) !== 'function' || !texts.length;
+  const pending = texts.filter((x) => !(x in TR[lang]));
+  b.disabled = trBusy;
+  b.textContent = trBusy ? t('trBusy') : pending.length ? t('trBtn') : (trShowOrig ? t('trHide') : t('trShow'));
+}
+async function translate() {
+  const texts = commentTexts();
+  const pending = texts.filter((x) => !(x in TR[lang]));
+  if (!pending.length) { trShowOrig = !trShowOrig; paintTrButton(); renderResults(); return; }
+  trBusy = true; paintTrButton();
+  const note = $('trNote'); note.hidden = false; note.textContent = t('trInfo');
+  const target = lang === 'en' ? 'English' : 'Korean';
+  const prompt = 'Translate each string in the JSON array below into natural ' + target + '. These are short comments from lab members reviewing homepage design drafts; keep design-draft codes like "AN" or "W" unchanged. If a string is already in ' + target + ', return it unchanged. Reply with ONLY a JSON array of strings, same length and order, no commentary.\n\n' + JSON.stringify(pending.slice(0, 80));
+  try {
+    const { completion } = await window.claude.sample({ prompt, modelTier: 'quick' });
+    const m = completion.match(/\[[\s\S]*\]/); const arr = JSON.parse(m ? m[0] : completion);
+    pending.slice(0, 80).forEach((src, i) => { if (typeof arr[i] === 'string') TR[lang][src] = arr[i]; });
+    trShowOrig = false; note.textContent = t('trDone');
+  } catch (e) {
+    const c = e && e.code;
+    if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(c)) { trDisabled = true; note.textContent = t('trOff'); }
+    else if (c === 'rate_limited') note.textContent = t('trLimit');
+    else note.textContent = t('trFail');
+  }
+  trBusy = false; paintTrButton(); renderResults();
+}
+$('trBtn').onclick = translate;
+function shown(text) { const tr = TR[lang][text]; return (!trShowOrig && tr && tr !== text) ? { text: tr, translated: true } : { text, translated: false }; }
+function commentP(text) { const s = shown(text); const p = el('p', null, s.text); if (s.translated) { p.title = text; p.append(el('span', 'trtag', ' · ' + t('trLabel'))); } return p; }
+
+/* ---------- results ---------- */
+let resultsSeq = 0;
+async function renderResults() {
+  if (SHARE) return;
+  const seq = ++resultsSeq;
+  const docs = Object.entries(all).filter(([, d]) => d && ((d.picks && d.picks.length) || d.direction || d.overall || (d.notes && Object.keys(d.notes).length)));
+  let ps = {}; if (docs.length) { try { ps = await window.claude.user.profiles(docs.map(([id]) => id)); } catch (e) {} }
+  if (seq !== resultsSeq) return;  // a newer render started while names were loading
+  $('pcount').textContent = docs.length ? t('participants', { n: docs.length }) : '';
+  paintTrButton();
+  const box = $('resbody'); box.textContent = '';
+  if (!docs.length) { box.append(el('p', 'empty-note', db ? t('noneYet') : t('noShared'))); return; }
+  const who = (id) => { const p = ps[id] || {}; const m = el('span', 'meta'); if (p.avatarUrl) { const i = el('img'); i.src = p.avatarUrl; i.alt = ''; m.append(i); } m.append(el('span', null, p.name || t('noName'))); return m; };
+
+  const picks = {}; docs.forEach(([, d]) => (d.picks || []).forEach((id) => { if (byId[id]) picks[id] = (picks[id] || 0) + 1; }));
+  const pk = Object.entries(picks).sort((a, b) => b[1] - a[1]);
+  const s1 = el('div', 'tally'); s1.append(el('h3', null, t('topPicks')));
+  if (!pk.length) s1.append(el('p', 'empty-note', t('noPicks')));
+  const max1 = pk.length ? pk[0][1] : 1;
+  pk.forEach(([id, n]) => { const r = el('div', 'trow'); const nm = el('button', 'name', L(byId[id], 'title')); nm.style.cssText = 'border:0;background:none;padding:0;text-align:left;color:inherit;'; nm.onclick = () => openViewer(id); const tr = el('div', 'track'); const f = el('div', 'fill'); f.style.width = (n / max1 * 100) + '%'; tr.append(f); r.append(nm, tr, el('span', 'n', String(n))); s1.append(r); });
+
+  const dirs = {}; docs.forEach(([, d]) => { if (d.direction) dirs[d.direction] = (dirs[d.direction] || 0) + 1; });
+  const s2 = el('div', 'tally'); s2.append(el('h3', null, t('dirTally')));
+  const max2 = Math.max(1, ...Object.values(dirs));
+  t('dirs').forEach(([v, tt]) => { const n = dirs[v] || 0; const r = el('div', 'trow'); const tr = el('div', 'track'); const f = el('div', 'fill'); f.style.width = (n / max2 * 100) + '%'; tr.append(f); r.append(el('span', 'name', tt), tr, el('span', 'n', String(n))); s2.append(r); });
+
+  const s3 = el('div'); s3.append(el('h3', null, t('fixList')));
+  const l3 = el('ul', 'cmts');
+  docs.forEach(([id, d]) => { const parts = [d.overall, d.dirNote].filter((x) => x && x.trim()); if (!parts.length) return; const li = el('li'); const m = who(id); if (d.direction) { const dd = t('dirs').find((x) => x[0] === d.direction); if (dd) m.append(el('span', 'motion', dd[1])); } li.append(m); parts.forEach((x) => li.append(commentP(x))); l3.append(li); });
+  s3.append(l3.children.length ? l3 : el('p', 'empty-note', t('nothing')));
+
+  const s4 = el('div'); s4.append(el('h3', null, t('perDesign')));
+  const l4 = el('ul', 'cmts'); let any = false;
+  ITEMS.forEach((it) => docs.forEach(([id, d]) => { const x = d.notes && d.notes[it.id]; if (!x) return; any = true; const li = el('li'); const m = who(id); const a = el('button', 'motion', it.code); a.style.border = '0'; a.onclick = () => openViewer(it.id); m.prepend(a); li.append(m, commentP(x)); l4.append(li); }));
+  s4.append(any ? l4 : el('p', 'empty-note', t('nothing')));
+  box.append(s1, s2, s3, s4);
+}
+
+/* ---------- viewer overlay ---------- */
+let cur = -1, mode = 'live', lastFocus = null, pageH = null;
+function openViewer(id) {
+  const i = ITEMS.findIndex((x) => x.id === id); if (i < 0) return;
+  if ($('ov').hidden) lastFocus = document.activeElement;
+  cur = i; $('ov').hidden = false; document.documentElement.style.overflow = 'hidden';
+  try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  loadStage(); paintOvState(); $('ovClose').focus();
+}
+function closeViewer() {
+  $('ov').hidden = true; document.documentElement.style.overflow = ''; $('stage').textContent = '';
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  if (lastFocus) lastFocus.focus();
+}
+function step(d) { openViewer(ITEMS[(cur + d + ITEMS.length) % ITEMS.length].id); }
+function paintOvState() {
+  const it = ITEMS[cur]; if (!it) return;
+  $('ovTitle').textContent = L(it, 'title'); $('ovDesc').textContent = L(GROUPS[it.g], 'name') + ' · ' + L(it, 'desc');
+  $('ovCount').textContent = (cur + 1) + ' / ' + ITEMS.length;
+  const on = mine.picks.includes(it.id); $('ovStar').setAttribute('aria-pressed', on); $('ovStar').textContent = on ? t('liked') : t('like');
+  const ta = $('ovNoteText'); if (document.activeElement !== ta) ta.value = mine.notes[it.id] || '';
+  $('ovNoteBtn').dataset.has = mine.notes[it.id] ? '1' : '0'; $('ovNoteBtn').textContent = mine.notes[it.id] ? t('noted') : t('note');
+  $('mLive').setAttribute('aria-pressed', mode === 'live'); $('mImg').setAttribute('aria-pressed', mode === 'img');
+}
+function loadStage() {
+  const it = ITEMS[cur], st = $('stage'); st.textContent = ''; st.scrollTop = 0; pageH = null;
+  if (mode === 'img') { const im = el('img', 'full'); im.src = 'f/' + it.id + '.jpg'; im.alt = L(it, 'title') + ' — ' + t('fullImg'); st.append(im); return; }
+  const fr = el('div', 'frame'); const ifr = el('iframe'); ifr.title = L(it, 'title'); ifr.src = 'd/' + it.id + '.dc.html';
+  ifr.addEventListener('load', () => { measure(ifr); setTimeout(() => measure(ifr), 900); try { ifr.contentWindow.document.addEventListener('keydown', onKey); } catch (e) {} });
+  fr.append(ifr); st.append(fr); layout();
+}
+function measure(ifr) { try { const d = ifr.contentDocument; d.documentElement.style.overflow = 'hidden'; pageH = Math.max(600, d.documentElement.scrollHeight); } catch (e) { pageH = null; } layout(); }
+function layout() {
+  const st = $('stage'), fr = st.querySelector('.frame'); if (!fr) return;
+  const s = Math.min(1, st.clientWidth / 1440), ifr = fr.firstChild;
+  const h = pageH || Math.ceil(st.clientHeight / s);
+  ifr.style.height = h + 'px'; fr.style.transform = 'scale(' + s + ')';
+  fr.style.marginRight = (1440 * s - 1440) + 'px'; fr.style.marginBottom = (h * s - h) + 'px';
+  st.style.overflowY = pageH ? 'scroll' : 'hidden';
+}
+function onKey(e) {
+  if ($('ov').hidden) return;
+  const typing = /TEXTAREA|INPUT/.test((e.target && e.target.tagName) || '');
+  if (e.key === 'Escape') { closeViewer(); e.preventDefault(); }
+  else if (!typing && e.key === 'ArrowRight') { step(1); e.preventDefault(); }
+  else if (!typing && e.key === 'ArrowLeft') { step(-1); e.preventDefault(); }
+}
+document.addEventListener('keydown', onKey);
+$('ovClose').onclick = closeViewer; $('ovPrev').onclick = () => step(-1); $('ovNext').onclick = () => step(1);
+$('ovReplay').onclick = () => loadStage();
+$('mLive').onclick = () => { mode = 'live'; loadStage(); paintOvState(); };
+$('mImg').onclick = () => { mode = 'img'; loadStage(); paintOvState(); };
+$('ovStar').onclick = () => togglePick(ITEMS[cur].id);
+$('ovNoteBtn').onclick = () => { const n = $('ovNote'); n.classList.toggle('open'); if (n.classList.contains('open')) $('ovNoteText').focus(); layout(); };
+$('ovNoteText').oninput = (e) => setNote(ITEMS[cur].id, e.target.value);
+new ResizeObserver(layout).observe($('stage'));
+
+/* ---------- share mode: compose + copy ---------- */
+function composeFeedback() {
+  const lines = [t('sHead'), t('sName') + ': ' + (mine.name || '-')];
+  lines.push(t('sPicks') + ': ' + (mine.picks.length ? mine.picks.map((id) => byId[id] ? byId[id].code + ' ' + shortTitle(byId[id]) : id).join(', ') : t('sNone')));
+  const d = t('dirs').find((x) => x[0] === mine.direction);
+  lines.push(t('sDir') + ': ' + (d ? d[1] : t('sNone')) + (mine.dirNote ? ' / ' + mine.dirNote : ''));
+  lines.push(t('sFix') + ': ' + (mine.overall ? mine.overall : t('sNone')));
+  const notes = ITEMS.filter((it) => mine.notes[it.id]);
+  if (notes.length) { lines.push(t('sNotes') + ':'); notes.forEach((it) => lines.push('- ' + it.code + ' ' + shortTitle(it) + ': ' + mine.notes[it.id].replace(/\n+/g, ' / '))); }
+  return lines.join('\n');
+}
+function renderSend() { if (!SHARE) return; if (document.activeElement !== $('rname')) $('rname').value = mine.name || ''; $('sendText').value = composeFeedback(); }
+$('rname').oninput = (e) => { mine.name = e.target.value; queueSave(); };
+$('copyBtn').onclick = async () => {
+  renderSend(); const ta = $('sendText');
+  try { await navigator.clipboard.writeText(ta.value); $('copyMsg').textContent = t('copied'); $('copyMsg').classList.add('ok'); }
+  catch (e) { ta.focus(); ta.select(); $('copyMsg').textContent = t('copyFail'); $('copyMsg').classList.remove('ok'); }
+};
+
+/* ---------- boot ---------- */
+try { const loc = JSON.parse(localStorage.getItem('ecme-review') || 'null'); if (loc) Object.assign(mine, loc, { notes: loc.notes || {} }); } catch (e) {}
+applyLang();
+const startId = location.hash.slice(1); if (byId[startId]) openViewer(startId);
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (byId[h] && (cur < 0 || ITEMS[cur].id !== h || $('ov').hidden)) openViewer(h); });
+if (SHARE) { $('resultsWrap').hidden = true; $('sendWrap').hidden = false; status('savedLocal', true); renderSend(); }
+(async () => {
+  if (SHARE) return;
+  try { uid = window.claude && window.claude.user ? await window.claude.user.id() : null; } catch (e) { uid = null; }
+  db = window.claude && window.claude.db ? window.claude.db : null;
+  if (!db) { status('localOnly'); renderResults(); return; }
+  db.collection('reviews').onSnapshot((snap) => {
+    all = {}; snap.docs.forEach((d) => { if (d.exists) all[d.id] = d.data(); });
+    if (uid && !loadedMine) {
+      loadedMine = true;
+      const srv = all[uid];
+      if (srv) { mine = { picks: srv.picks || [], direction: srv.direction || '', dirNote: srv.dirNote || '', overall: srv.overall || '', notes: Object.assign({}, srv.notes || {}) }; paintMine(); status('saved', true); }
+      else if (mine.picks.length || mine.overall || mine.direction || Object.keys(mine.notes).length) save();
+      else status('autoSave');
+    } else if (!uid && !loadedMine) { loadedMine = true; status('localNoId'); }
+    renderResults();
+  }, () => { db = null; status('localOnly'); renderResults(); });
+})();
+</script>
+</html>
