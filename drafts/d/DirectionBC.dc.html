@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; background: #fff; color: #111827; font-family: 'Inter', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; font-size: 15.5px; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    .bc-root * { box-sizing: border-box; }
+    .bc-wrap { width: 1200px; margin: 0 auto; }
+    .bc-serif { font-family: 'Source Serif 4', Georgia, serif; }
+    .bc-top { background: #0b1f3a; color: #fff; }
+    .bc-nav { height: 78px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .bc-brand { display: flex; align-items: center; gap: 12px; }
+    .bc-brand img { height: 40px; display: block; }
+    .bc-brand b { display: block; font-size: 17px; font-weight: 700; letter-spacing: -.01em; line-height: 1.2; }
+    .bc-brand span { display: block; font-size: 12px; opacity: .75; }
+    .bc-links { display: flex; gap: 28px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,.85); }
+    .bc-links a:hover, .bc-links a.on { color: #fff; } .bc-links a.on { font-weight: 600; border-bottom: 2px solid #f59e0b; padding-bottom: 3px; }
+    .bc-hero { display: grid; grid-template-columns: 1fr 480px; gap: 60px; align-items: center; padding: 70px 0 80px; }
+    .bc-hero h1 { margin: 18px 0 0; font-size: 56px; line-height: 1.08; font-weight: 600; letter-spacing: -.02em; }
+    .bc-hero p { margin: 22px 0 0; font-size: 17.5px; color: rgba(255,255,255,.8); line-height: 1.7; max-width: 600px; }
+    .bc-kicker { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #fbbf24; }
+    .bc-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 6px; font-weight: 600; font-size: 15px; transition: background .2s, border-color .2s; }
+    .bc-amber { background: #f59e0b; color: #0b1f3a; } .bc-amber:hover { background: #fbbf24; }
+    .bc-outline { border: 1px solid rgba(255,255,255,.4); color: #fff; } .bc-outline:hover { border-color: #fff; }
+    .bc-hero img { width: 480px; height: 320px; object-fit: cover; display: block; border-radius: 6px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+    .bc-hero-stats { display: flex; gap: 40px; margin-top: 40px; }
+    .bc-hero-stats b { display: block; font-size: 32px; font-weight: 600; line-height: 1; } .bc-hero-stats span { display: block; margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.7); }
+    .bc-in { opacity: 0; animation: bc-up 1s ease forwards; }
+    .bc-d1 { animation-delay: .1s; } .bc-d2 { animation-delay: .25s; } .bc-d3 { animation-delay: .4s; } .bc-d4 { animation-delay: .55s; }
+    @keyframes bc-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    .bc-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #b45309; }
+    .bc-h2 { margin: 8px 0 0; font-size: 36px; font-weight: 600; letter-spacing: -.015em; line-height: 1.15; color: #0b1f3a; }
+    .bc-sec { padding: 76px 0; }
+    .bc-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 34px; }
+    .bc-head p { margin: 8px 0 0; color: #6b7280; font-size: 16px; }
+    .bc-link { font-size: 14px; font-weight: 600; color: #0b1f3a; border-bottom: 1px solid #f59e0b; padding-bottom: 1px; }
+
+    /* research: 2 + 3 tiles with icons */
+    .bc-rg { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+    .bc-rc { border: 1px solid #e5e7eb; border-radius: 8px; padding: 28px; display: flex; flex-direction: column; transition: border-color .2s, box-shadow .2s; }
+    .bc-rc:hover { border-color: #0b1f3a; box-shadow: 0 10px 30px rgba(11,31,58,.08); }
+    .bc-rc.big { grid-column: span 3; min-height: 230px; }
+    .bc-rc.small { grid-column: span 2; }
+    .bc-ic { width: 46px; height: 46px; border-radius: 8px; background: #fef3c7; display: flex; align-items: center; justify-content: center; }
+    .bc-ic svg { width: 24px; height: 24px; fill: none; stroke: #b45309; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .bc-rc h3 { margin: 20px 0 8px; font-size: 20px; font-weight: 600; color: #0b1f3a; line-height: 1.3; }
+    .bc-rc.small h3 { font-size: 17px; }
+    .bc-rc p { margin: 0; font-size: 14.5px; color: #6b7280; flex: 1; }
+    .bc-rc .bc-link { margin-top: 18px; align-self: flex-start; }
+
+    /* news: two columns list */
+    .bc-band { background: #f8f7f4; }
+    .bc-nl { display: grid; grid-template-columns: 1fr 1fr; gap: 0 60px; }
+    .bc-ni { display: grid; grid-template-columns: 96px 1fr; gap: 18px; padding: 20px 0; border-top: 1px solid #e5e2da; }
+    .bc-ni .d { font-size: 13px; color: #6b7280; font-weight: 500; padding-top: 3px; }
+    .bc-ni h3 { margin: 6px 0 0; font-size: 16px; font-weight: 600; line-height: 1.5; color: #111827; }
+    .bc-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 4px; letter-spacing: .06em; }
+    .bc-award { color: #047857; background: #d1fae5; } .bc-paper { color: #1d4ed8; background: #dbeafe; } .bc-press { color: #b91c1c; background: #fee2e2; }
+    .bc-feat { display: grid; grid-template-columns: 420px 1fr; gap: 36px; align-items: center; background: #fff; border: 1px solid #e5e2da; border-radius: 8px; overflow: hidden; margin-bottom: 36px; }
+    .bc-feat img { width: 420px; height: 260px; object-fit: cover; display: block; }
+    .bc-feat h3 { margin: 12px 0 14px; font-size: 24px; font-weight: 600; line-height: 1.4; color: #0b1f3a; }
+
+    /* PI */
+    .bc-pi { display: grid; grid-template-columns: 240px 1fr 1fr; gap: 40px; align-items: start; }
+    .bc-pi img { width: 240px; height: 300px; object-fit: cover; border-radius: 6px; display: block; }
+    .bc-pi h3 { margin: 0; font-size: 32px; font-weight: 600; color: #0b1f3a; line-height: 1.2; }
+    .bc-pi .r { margin: 6px 0 0; font-weight: 500; } .bc-pi .d { color: #6b7280; font-size: 14px; }
+    .bc-pi p { margin: 16px 0 0; color: #4b5563; font-size: 15px; line-height: 1.7; }
+    .bc-lbl { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #b45309; margin: 0 0 8px; }
+    .bc-cl { list-style: none; margin: 0 0 22px; padding: 0; }
+    .bc-cl li { display: grid; grid-template-columns: 90px 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid #eee; font-size: 14px; }
+    .bc-cl li small { color: #6b7280; font-weight: 600; font-size: 13px; }
+    .bc-jr { display: flex; justify-content: space-between; align-items: center; padding: 26px 0; border-top: 1px solid #e5e7eb; margin-top: 60px; }
+    .bc-jr div { display: flex; gap: 34px; font-size: 16px; font-weight: 600; color: #0b1f3a; }
+    .bc-foot { background: #0b1f3a; color: #cbd5e1; padding: 44px 0 26px; }
+    .bc-foot-g { display: grid; grid-template-columns: 1fr 200px 260px; gap: 48px; }
+    .bc-foot h4 { margin: 4px 0 12px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #94a3b8; }
+    .bc-foot-l { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 14px; }
+    .bc-foot-bot { margin-top: 32px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } .bc-in { opacity: 1; } }
+  </style>
+</helmet>
+<div class="bc-root" style="width:1440px; position:relative; overflow:hidden; background:#fff">
+  <div class="bc-top">
+    <div class="bc-wrap bc-nav">
+      <a class="bc-brand" href="#"><img src="logo-white.png" alt="ECME logo"><div><b>ECME Lab</b><span>Energy Conversion Materials Engineering · DGIST</span></div></a>
+      <nav class="bc-links"><a class="on" href="#">Home</a><a href="#">Professor</a><a href="#">People</a><a href="#">Research</a><a href="#">Publications</a><a href="#">News</a><a href="#">Contact</a></nav>
+    </div>
+    <div class="bc-wrap bc-hero">
+      <div>
+        <div class="bc-kicker bc-in bc-d1">Daegu Gyeongbuk Institute of Science &amp; Technology</div>
+        <h1 class="bc-serif bc-in bc-d2">Energy Conversion Materials Engineering Laboratory</h1>
+        <p class="bc-in bc-d3">We develop piezoelectric and triboelectric nanogenerators, functional polymers and bio-piezoelectric materials, and turn them into self-powered electronics and human-inspired tactile sensors.</p>
+        <div class="bc-in bc-d4" style="display:flex; gap:12px; margin-top:30px;"><a class="bc-btn bc-amber" href="#">Our research</a><a class="bc-btn bc-outline" href="#">Publications</a></div>
+        <div class="bc-hero-stats bc-in bc-d4">
+          <div><b class="bc-serif">81</b><span>Papers</span></div><div><b class="bc-serif">35</b><span>Patents</span></div><div><b class="bc-serif">18</b><span>Members</span></div><div><b class="bc-serif">53</b><span>News</span></div>
+        </div>
+      </div>
+      <img class="bc-in bc-d3" src="hero.jpg" alt="ECME Lab group photo">
+    </div>
+  </div>
+
+  <section class="bc-sec">
+    <div class="bc-wrap">
+      <div class="bc-head"><div><div class="bc-eyebrow">Research</div><h2 class="bc-h2 bc-serif">Five research areas</h2><p>From materials synthesis to devices and applications.</p></div><a class="bc-link" href="#">All research</a></div>
+      <div class="bc-rg">
+        <a class="bc-rc big" href="#"><div class="bc-ic"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div><h3>01 · Energy Harvesting Technology</h3><p>Piezoelectric and triboelectric nanogenerators that convert everyday motion into usable electricity.</p><span class="bc-link">Explore</span></a>
+        <a class="bc-rc big" href="#"><div class="bc-ic"><svg viewBox="0 0 24 24"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v5M12 10V4a1.5 1.5 0 0 1 3 0v6M15 10V6a1.5 1.5 0 0 1 3 0v7a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.6-2.2L3.5 14.5a1.6 1.6 0 0 1 2.3-2.2L9 15"/></svg></div><h3>04 · Various Novel Applications</h3><p>Self-powered electronics and human-inspired tactile sensors built on our materials and devices.</p><span class="bc-link">Explore</span></a>
+        <a class="bc-rc small" href="#"><div class="bc-ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.5 6h7M7.3 8.2l3.4 7.6M16.7 8.2l-3.4 7.6"/></svg></div><h3>02 · Synthesis of Functional Polymers</h3><p>Functional polymers for energy conversion devices.</p></a>
+        <a class="bc-rc small" href="#"><div class="bc-ic"><svg viewBox="0 0 24 24"><path d="M5 20c0-9 6-15 15-15 0 9-6 15-15 15z"/><path d="M5 20l9-9"/></svg></div><h3>03 · Bio-Piezoelectric Materials</h3><p>Piezoelectric materials of biological origin.</p></a>
+        <a class="bc-rc small" href="#"><div class="bc-ic"><svg viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M6.6 7.4l3.8 3.4M6.6 16.6l3.8-3.4M14 12h3"/></svg></div><h3>05 · AI-Integrated Research Platform</h3><p>AI-assisted materials and device research.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bc-sec bc-band">
+    <div class="bc-wrap">
+      <div class="bc-head"><div><div class="bc-eyebrow">News</div><h2 class="bc-h2 bc-serif">News &amp; Achievements</h2></div><a class="bc-link" href="#">View all news</a></div>
+      <a class="bc-feat" href="#"><img src="photo1.jpg" alt=""><div style="padding-right: 32px;"><span class="bc-tag bc-award">AWARD</span> <span style="font-size:13px; color:#6b7280; margin-left:8px;">2026.06.12</span><h3 class="bc-serif">Gerald Selasie Gbadam · 류연경 석∙박사과정, 2026 NGPT Best Oral Award 수상</h3><span class="bc-link">Read more</span></div></a>
+      <div class="bc-nl">
+        <a class="bc-ni" href="#"><span class="d">2026.06.12</span><div><span class="bc-tag bc-award">AWARD</span><h3>곽수정 석∙박사과정 · 최다은 석사과정, 2026 NGPT Best Poster Award 수상</h3></div></a>
+        <a class="bc-ni" href="#"><span class="d">2025.12.16</span><div><span class="bc-tag bc-award">AWARD</span><h3>Gerald Selasie Gbadam 석∙박사과정, 2025 대학원 연구페스티벌 우수 연구자상</h3></div></a>
+        <a class="bc-ni" href="#"><span class="d">2025.11.03</span><div><span class="bc-tag bc-press">PRESS</span><h3>연합뉴스 · “배터리 교체, 충전 No” 마찰전기 이용한 나노발전기 개발</h3></div></a>
+        <a class="bc-ni" href="#"><span class="d">2025.10</span><div><span class="bc-tag bc-paper">PAPER</span><h3>Gerald Selasie Gbadam 석∙박사과정 1저자 논문 Nature Communications 게재 확정</h3></div></a>
+        <a class="bc-ni" href="#"><span class="d">2025.06.19</span><div><span class="bc-tag bc-paper">PAPER</span><h3>주현서 석∙박사과정 1저자 논문 Advanced Materials 게재 확정</h3></div></a>
+        <a class="bc-ni" href="#"><span class="d">2025</span><div><span class="bc-tag bc-award">AWARD</span><h3>이주혁 교수, KIM Emerging Innovator in Materials 선정</h3></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bc-sec" style="padding-bottom: 0;">
+    <div class="bc-wrap">
+      <div class="bc-eyebrow">Professor</div><h2 class="bc-h2 bc-serif" style="margin-bottom: 30px;">Principal Investigator</h2>
+      <div class="bc-pi">
+        <img src="prof.jpg" alt="Prof. Ju-Hyuck Lee">
+        <div>
+          <h3 class="bc-serif">Ju-Hyuck Lee</h3>
+          <div class="r">Associate Professor</div>
+          <div class="d">Dept. of Energy Science &amp; Engineering, DGIST<br>jhlee85@dgist.ac.kr</div>
+          <p>Leads ECME Lab since 2018, after a postdoc at UC Berkeley &amp; LBNL. Research on functional nanomaterials, nanogenerators, self-powered electronics and tactile sensors.</p>
+          <a class="bc-btn bc-amber" href="#" style="margin-top: 22px; padding: 11px 22px; font-size: 14px;">View profile</a>
+        </div>
+        <div>
+          <div class="bc-lbl">Career</div>
+          <ul class="bc-cl"><li><small>2018 –</small>DGIST</li><li><small>2016 – 2018</small>Postdoc, UC Berkeley &amp; LBNL</li><li><small>2016</small>Ph.D., SKKU</li></ul>
+          <div class="bc-lbl">Honors</div>
+          <ul class="bc-cl" style="margin-bottom:0;"><li><small>2025 –</small>Nano Energy Early Career Researcher Board</li><li><small>2025</small>KIM Emerging Innovator in Materials</li><li><small>2025</small>Energies Award (MDPI)</li><li><small>2022</small>IEEE-ISAF Young Investigator Award</li></ul>
+        </div>
+      </div>
+      <div class="bc-jr"><span class="bc-eyebrow" style="color:#6b7280;">Published in</span><div><span>Nature Communications</span><span>Advanced Materials</span><span>Nano Energy</span><span>Advanced Science</span><span>J. Mater. Chem. A</span><span>Nano Trends</span></div></div>
+    </div>
+  </section>
+
+  <footer class="bc-foot">
+    <div class="bc-wrap">
+      <div class="bc-foot-g">
+        <div>
+          <a class="bc-brand" href="#"><img src="logo-white.png" alt=""><div><b>ECME Lab</b><span>Energy Conversion Materials Engineering Lab</span></div></a>
+          <div style="font-size:14px; line-height:1.8; margin-top:14px;">Room E6-411, Dept. of Energy Science &amp; Engineering, DGIST<br>Daegu 42988, Republic of Korea</div>
+        </div>
+        <div><h4>Explore</h4><nav class="bc-foot-l"><a href="#">Professor</a><a href="#">People</a><a href="#">Research</a><a href="#">Publications</a><a href="#">News</a><a href="#">Contact</a></nav></div>
+        <div><h4>Contact</h4><a href="#" style="color:#fbbf24; font-weight:600;">jhlee85@dgist.ac.kr</a></div>
+      </div>
+      <div class="bc-foot-bot"><span>Energy Conversion Materials Engineering Lab · DGIST</span><span>© JU HYUCK LEE's Group</span></div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+</body>
+</html>
