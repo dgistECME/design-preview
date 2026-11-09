@@ -226,7 +226,7 @@ const I18N = {
     lead: 'DGIST 에너지공학과 이주혁 교수 연구실(ECME Lab) 홈페이지를 새로 다듬고 있습니다. 지금까지 만든 시안 59개를 방향별로 모았습니다. 둘러보고 마음에 드는 안과 방향, 고치면 좋을 점을 남겨 주세요. 의견은 자동 저장되고, 아래 "모두의 의견"에서 함께 볼 수 있습니다.',
     step1: '썸네일을 눌러 실제 화면 보기 (애니메이션 재생)', step2: '좋은 안에 ★ — 최대 3개', step3: '안마다 의견, 마지막에 방향과 고칠 점',
     jumpFeedback: '방향·고칠 점', jumpResults: '모두의 의견', myPicks: '내가 고른 안', emptySlot: '빈 자리', unpick: '선택 취소',
-    motion: '움직임', like: '☆ 좋아요', liked: '★ 좋아요', note: '의견', noted: '의견 ✓', view: '크게 보기', viewAria: '크게 보기',
+    motionLbl: '움직임', like: '☆ 좋아요', liked: '★ 좋아요', note: '의견', noted: '의견 ✓', view: '크게 보기', viewAria: '크게 보기',
     notePh: '이 안에서 좋은 점, 고칠 점',
     overallTitle: '전체 의견', dirQ: '어떤 방향이 가장 좋나요?', dirNotePh: '기타를 골랐거나 덧붙일 말이 있으면 적어 주세요',
     fixQ: '고르신 안이나 방향에서 고치면 좋을 점', fixHint: '— 색, 글씨, 사진, 움직임, 들어갈 내용 등 무엇이든', fixPh: '예: 움직임은 더 줄이고, 연구 분야 설명이 첫 화면에 보였으면 좋겠어요.',
@@ -269,7 +269,7 @@ const I18N = {
     lead: 'We are redesigning the homepage of ECME Lab (Prof. Ju-Hyuck Lee, Dept. of Energy Science & Engineering, DGIST). Here are all 59 drafts so far, grouped by direction. Look around, then tell us which drafts and direction you like and what should change. Your input saves automatically and appears under "Everyone\'s feedback" below.',
     step1: 'Click a thumbnail to see the real page (animations play)', step2: 'Star the ones you like ★ — up to 3', step3: 'Comment on drafts, then pick a direction and what to fix',
     jumpFeedback: 'Direction & fixes', jumpResults: 'Everyone\'s feedback', myPicks: 'My picks', emptySlot: 'Empty', unpick: 'Remove pick',
-    motion: 'Motion', like: '☆ Like', liked: '★ Liked', note: 'Comment', noted: 'Comment ✓', view: 'View large', viewAria: 'View large',
+    motionLbl: 'Motion', like: '☆ Like', liked: '★ Liked', note: 'Comment', noted: 'Comment ✓', view: 'View large', viewAria: 'View large',
     notePh: 'What works and what to fix in this draft',
     overallTitle: 'Overall feedback', dirQ: 'Which direction do you like best?', dirNotePh: 'If you chose Other, or want to add something, write it here',
     fixQ: 'What should change in the drafts or direction you chose?', fixHint: '— color, type, photos, motion, content, anything', fixPh: 'e.g. Less motion, and show the research areas on the first screen.',
@@ -379,7 +379,7 @@ function renderGroups() {
   const root = $('groups'); root.textContent = '';
   GROUPS.forEach((g) => {
     const s = el('section', 'group'); const h = el('div', 'ghead');
-    h.append(el('h2', null, L(g, 'name')), el('span', 'motion', t('motion') + ' ' + L(g, 'motion')));
+    h.append(el('h2', null, L(g, 'name')), el('span', 'motion', t('motionLbl') + ' ' + L(g, 'motion')));
     s.append(h, el('p', 'gnote', L(g, 'note')));
     const grid = el('div', 'grid');
     g.items.forEach((it) => {
