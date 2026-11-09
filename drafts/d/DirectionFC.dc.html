@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ECME Lab × 디지몬 (재미용 예시)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+  /* 디지바이스·디지털 월드 느낌: 밝은 시안 격자 + 주황 포인트, 픽셀 테두리, 진화 단계로 연구 소개. 그림은 디지몬 위키 공식 일러스트(개인 열람용). */
+  :root { --cyan: #0fb9d6; --cyan2: #e6fbff; --orange: #ff7a1a; --ink: #1a2238; --grid: rgba(15,185,214,.18); }
+  body { margin: 0; background: #f6fdff; color: var(--ink); font-family: 'Nunito', 'Noto Sans KR', sans-serif; font-size: 15.5px; line-height: 1.6; word-break: keep-all; }
+  .page { max-width: 1440px; margin: 0 auto; position: relative; overflow: hidden; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 40px 40px; }
+  .h { font-weight: 900; letter-spacing: -0.02em; }
+  .px { font-family: 'Press Start 2P', monospace; letter-spacing: 0; }
+  .frame { background: #fff; border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--cyan); position: relative; }
+  .frame::before { content: ''; position: absolute; inset: 6px; border: 2px dashed rgba(26,34,56,.18); pointer-events: none; }
+  .tag { display: inline-block; padding: 4px 10px; border: 3px solid var(--ink); background: #fff; font-weight: 900; font-size: 12px; }
+  .tag.o { background: var(--orange); color: #fff; } .tag.c { background: var(--cyan); color: #fff; }
+  .btn { display: inline-block; padding: 13px 24px; border: 4px solid var(--ink); font-weight: 900; font-size: 15px; box-shadow: 5px 5px 0 var(--ink); background: var(--orange); color: #fff; }
+  .mon { display: inline-flex; align-items: flex-end; justify-content: center; }
+  .mon img { display: block; border: 4px solid var(--ink); background: #fff; box-shadow: 5px 5px 0 var(--cyan); image-rendering: auto; }
+  .mon.sq img { border-radius: 14px; }
+  .mon.missing img { visibility: hidden; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .bob { animation: bob 2.8s ease-in-out infinite; } .bob2 { animation-delay: -1s; } .bob3 { animation-delay: -1.9s; }
+  @keyframes scan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+  .screen { position: relative; overflow: hidden; background: linear-gradient(180deg, #d9f7ff, #fff); }
+  .screen::after { content: ''; position: absolute; left: 0; right: 0; height: 40%; background: linear-gradient(180deg, transparent, rgba(15,185,214,.18), transparent); animation: scan 6s linear infinite; pointer-events: none; }
+  .arrow { font-size: 40px; color: var(--orange); font-weight: 900; align-self: center; }
+  .bubble { position: absolute; background: #fff; border: 3px solid var(--ink); padding: 8px 14px; font-weight: 900; font-size: 14px; white-space: nowrap; box-shadow: 4px 4px 0 var(--ink); z-index: 3; }
+  @media (max-width: 1100px) { .page > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<style>#how{display:none!important}</style></head>
+<body>
+<div class="page">
+  <!-- digivice bar -->
+  <div style="background: var(--ink); color: #fff; padding: 14px 72px; display: flex; align-items: center; justify-content: space-between; border-bottom: 6px solid var(--orange);">
+    <div style="display: flex; align-items: center; gap: 14px;"><div style="width: 40px; height: 40px; border: 3px solid var(--cyan); background: #0b2a33; display: grid; place-items: center;"><span class="px" style="color: var(--cyan); font-size: 10px;">E</span></div><div><div class="px" style="font-size: 12px; color: var(--cyan);">ECME DIGIVICE</div><div style="font-size: 11px; opacity: .8;">에너지변환재료공학 연구실 · DGIST</div></div></div>
+    <div style="display: flex; gap: 6px; font-weight: 900; font-size: 12.5px;">
+      <span class="tag o">Home</span><span class="tag" style="background: #fff; color: var(--ink);">Professor</span><span class="tag" style="background: #fff; color: var(--ink);">People</span><span class="tag" style="background: #fff; color: var(--ink);">Research</span><span class="tag" style="background: #fff; color: var(--ink);">Publications</span><span class="tag" style="background: #fff; color: var(--ink);">News</span><span class="tag" style="background: #fff; color: var(--ink);">Contact</span>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="position: relative; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; padding: 56px 72px 0; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <span class="px" style="font-size: 11px; color: var(--cyan);">&gt; DIGITAL WORLD · SECTOR E6-411_</span>
+      <div class="h" style="font-size: 64px; line-height: 1.04;">움직임이 데이터가 되고,<br>데이터가 <span style="color: var(--orange);">전기</span>가 된다</div>
+      <div style="font-size: 17.5px; color: #4a5470; max-width: 520px;">압전·마찰전기 나노발전기, 기능성 고분자, 바이오 압전 소재. 재료에서 소자로, 소자에서 응용으로 진화하는 연구실. DGIST 이주혁 교수 연구실.</div>
+      <div style="display: flex; gap: 12px;"><span class="btn">연구 진화 트리 →</span><span class="btn" style="background: #fff; color: var(--ink);">선택받은 아이들 모집</span></div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;"><span class="tag c">논문 81</span><span class="tag c">특허 35</span><span class="tag c">멤버 18</span><span class="tag c">소식 53</span></div>
+    </div>
+    <div class="frame screen" style="height: 500px;">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: repeating-linear-gradient(90deg, #bff0ff 0 20px, #d9f7ff 20px 40px); border-top: 4px solid var(--ink);"></div>
+      <div class="bubble" style="left: 40px; top: 60px;">아구몬: "에너지, 받아라!"</div>
+      <div class="bubble" style="right: 40px; top: 120px;">텐타몬: "전기 타입은 내 담당이지"</div>
+      <span class="mon bob sq" data-mon="agumon" style="position: absolute; left: 50px; bottom: 60px;"><img style="height: 220px;" alt="아구몬"></span>
+      <span class="mon bob bob2 sq" data-mon="tentomon" style="position: absolute; left: 300px; bottom: 90px;"><img style="height: 180px;" alt="텐타몬"></span>
+      <span class="mon bob bob3 sq" data-mon="gabumon" style="position: absolute; right: 50px; bottom: 60px;"><img style="height: 210px;" alt="가부몬"></span>
+      <span class="px" style="position: absolute; left: 20px; bottom: 16px; font-size: 10px; color: var(--ink);">ENERGY ▮▮▮▮▮▮▮▮▮▯ 90%</span>
+    </div>
+  </div>
+
+  <!-- evolution tree = research stages -->
+  <div style="position: relative; padding: 90px 72px 0;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px;">
+      <div><span class="tag o">RESEARCH · DIGIVOLUTION</span><div class="h" style="font-size: 40px; margin-top: 12px;">재료 → 소자 → 응용, 진화 트리</div></div>
+      <span style="font-weight: 900; color: var(--orange);">전체 연구 →</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; gap: 10px; align-items: stretch;">
+      <div class="frame" style="padding: 20px; display: grid; gap: 12px;"><span class="px" style="font-size: 10px; color: var(--cyan);">LV.1 ROOKIE</span><div class="h" style="font-size: 20px;">재료 단계</div><div style="display: flex; gap: 10px;"><span class="mon sq" data-mon="palmon"><img style="height: 96px;" alt="팔몬"></span><span class="mon sq" data-mon="gomamon"><img style="height: 96px;" alt="쉬라몬"></span></div><div style="font-weight: 900;">02 Synthesis of Functional Polymers</div><div style="font-weight: 900;">03 Bio-Piezoelectric Materials</div><div style="font-size: 13px; color: #4a5470;">기능성 고분자와 생체 유래 압전 재료를 합성한다. 모든 진화의 출발점.</div></div>
+      <div class="arrow">▶</div>
+      <div class="frame" style="padding: 20px; display: grid; gap: 12px;"><span class="px" style="font-size: 10px; color: var(--cyan);">LV.2 CHAMPION</span><div class="h" style="font-size: 20px;">소자 단계</div><div style="display: flex; gap: 10px;"><span class="mon sq" data-mon="greymon"><img style="height: 96px;" alt="그레이몬"></span><span class="mon sq" data-mon="tentomon"><img style="height: 96px;" alt="텐타몬"></span></div><div style="font-weight: 900;">01 Energy Harvesting Technology</div><div style="font-size: 13px; color: #4a5470;">압전·마찰전기 나노발전기로 움직임을 전기로 바꾼다. 출력이 커진다.</div></div>
+      <div class="arrow">▶</div>
+      <div class="frame" style="padding: 20px; display: grid; gap: 12px;"><span class="px" style="font-size: 10px; color: var(--orange);">LV.3 MEGA</span><div class="h" style="font-size: 20px;">응용 단계</div><div style="display: flex; gap: 10px;"><span class="mon sq" data-mon="omnimon"><img style="height: 96px;" alt="오메가몬"></span><span class="mon sq" data-mon="gatomon"><img style="height: 96px;" alt="가트몬"></span></div><div style="font-weight: 900;">04 Various Novel Applications</div><div style="font-weight: 900;">05 AI-Integrated Research Platform</div><div style="font-size: 13px; color: #4a5470;">자가발전 전자기기, 촉각 센서, 그리고 AI가 결합된 연구 플랫폼. 궁극체.</div></div>
+    </div>
+  </div>
+
+  <!-- news + tamer -->
+  <div style="position: relative; display: grid; grid-template-columns: 7fr 5fr; gap: 36px; padding: 90px 72px 0; align-items: start;">
+    <div>
+      <span class="tag c">BATTLE LOG</span><div class="h" style="font-size: 36px; margin: 12px 0 20px;">최근 전투 기록</div>
+      <div style="display: grid; gap: 14px;">
+        <div class="frame" style="padding: 14px 18px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="tag o" style="font-size: 10px;">AWARD</span><div style="font-size: 12px; color: #7a8299; font-weight: 700; margin-top: 6px;">2026.06.12</div></div><div style="font-weight: 700;">Gerald Selasie Gbadam · 류연경 석∙박사과정, 2026 NGPT Best Oral Award 수상 — 진화 성공!</div><span class="mon sq" data-mon="patamon"><img style="height: 64px;" alt="파닥몬"></span></div>
+        <div class="frame" style="padding: 14px 18px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="tag o" style="font-size: 10px;">AWARD</span><div style="font-size: 12px; color: #7a8299; font-weight: 700; margin-top: 6px;">2026.06.12</div></div><div style="font-weight: 700;">곽수정 석∙박사과정 · 최다은 석사과정, 2026 NGPT Best Poster Award 수상</div><span class="mon sq" data-mon="biyomon"><img style="height: 64px;" alt="피요몬"></span></div>
+        <div class="frame" style="padding: 14px 18px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="tag c" style="font-size: 10px;">PAPER</span><div style="font-size: 12px; color: #7a8299; font-weight: 700; margin-top: 6px;">2025.10</div></div><div style="font-weight: 700;">Gerald Selasie Gbadam 석∙박사과정 1저자 논문, Nature Communications 게재 확정</div><span class="mon sq" data-mon="greymon"><img style="height: 64px;" alt="그레이몬"></span></div>
+        <div class="frame" style="padding: 14px 18px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="tag" style="font-size: 10px;">PRESS</span><div style="font-size: 12px; color: #7a8299; font-weight: 700; margin-top: 6px;">2025.11.03</div></div><div style="font-weight: 700;">연합뉴스 · "배터리 교체, 충전 No" 마찰전기 이용한 나노발전기 개발</div><span class="mon sq" data-mon="gomamon"><img style="height: 64px;" alt="쉬라몬"></span></div>
+      </div>
+    </div>
+    <div>
+      <span class="tag o">TAMER</span><div class="h" style="font-size: 36px; margin: 12px 0 20px;">선택받은 어른</div>
+      <div class="frame" style="padding: 26px;">
+        <div style="display: flex; gap: 16px; align-items: center;"><img src="prof.jpg" style="width: 84px; height: 84px; object-fit: cover; border: 4px solid var(--ink); display: block;"><div><div class="h" style="font-size: 22px;">이주혁 Ju-Hyuck Lee</div><div style="font-size: 13px; color: #7a8299; font-weight: 700;">Associate Professor · 에너지공학과, DGIST</div></div></div>
+        <div style="margin-top: 16px; font-size: 14.5px; line-height: 1.75;">Ph.D. SKKU (2016) · Postdoc UC Berkeley &amp; LBNL (2016–2018) · DGIST 2018~<br>파트너: 기능성 나노소재, 압전·마찰전기 발전기, 자가발전 전자기기, 촉각 센서</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;"><span class="tag c" style="font-size: 10px;">문장: Nano Energy ECR Board</span><span class="tag c" style="font-size: 10px;">문장: KIM Emerging Innovator 2025</span><span class="tag c" style="font-size: 10px;">문장: IEEE-ISAF Young Investigator</span></div>
+      </div>
+      <div style="margin-top: 40px; display: flex; justify-content: flex-end; gap: 12px; align-items: flex-end;"><div class="bubble" style="position: static; margin-bottom: 30px;">가부몬: "파트너, 오늘도 실험이야?"</div><span class="mon bob sq" data-mon="gabumon"><img style="height: 120px;" alt="가부몬"></span></div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="position: relative; margin-top: 90px; background: var(--ink); color: #fff; padding: 36px 72px 24px; border-top: 6px solid var(--cyan);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;">
+      <div style="font-size: 13px; line-height: 1.8;"><b>ECME Lab · DGIST</b><br>Room E6-411, Dept. of Energy Science &amp; Engineering, DGIST, Daegu 42988<br>© JU HYUCK LEE's Group · 비공식 팬 콘셉트 예시 · 캐릭터 저작권은 각 원저작자에게 있음</div>
+      <div style="display: flex; gap: 8px; align-items: flex-end;"><span class="mon sq" data-mon="agumon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="gabumon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="biyomon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="tentomon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="palmon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="gomamon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="patamon"><img style="height: 64px;" alt=""></span><span class="mon sq" data-mon="gatomon"><img style="height: 64px;" alt=""></span></div>
+    </div>
+  </div>
+</div>
+<script>
+// 디지몬 위키(digimon.fandom.com) 공식 일러스트. 로컬 img/d-<이름>.png 가 있으면 그걸 먼저 씀.
+const W = 'https://static.wikia.nocookie.net/digimon/images/';
+const REMOTE = {
+  agumon: W + '6/68/Agumon_b.jpg/revision/latest/scale-to-width-down/400?cb=20170210150934',
+  gabumon: W + 'd/d1/Gabumon_b.jpg/revision/latest/scale-to-width-down/400?cb=20171127121438',
+  patamon: W + '7/77/Patamon_b.jpg/revision/latest/scale-to-width-down/400?cb=20150402010956',
+  tentomon: W + '6/67/Tentomon_b.jpg/revision/latest/scale-to-width-down/400?cb=20130402191102',
+  gomamon: W + '0/04/Gomamon_b.jpg/revision/latest/scale-to-width-down/400?cb=20130402191150',
+  palmon: W + 'c/c7/Palmon_b.jpg/revision/latest/scale-to-width-down/400?cb=20130402190834',
+  biyomon: W + '5/5a/Biyomon_b.jpg/revision/latest/scale-to-width-down/400?cb=20130402190039',
+  gatomon: W + '7/7a/Gatomon_b.jpg/revision/latest/scale-to-width-down/400?cb=20130402190852',
+  greymon: W + '5/56/Greymon_b.jpg/revision/latest/scale-to-width-down/400?cb=20170226001958',
+  omnimon: W + '9/9c/Omnimon_b.jpg/revision/latest/scale-to-width-down/400?cb=20090127181741',
+};
+document.querySelectorAll('.mon').forEach((slot) => {
+  const k = slot.dataset.mon, img = slot.querySelector('img');
+  img.onerror = () => { if (!img.dataset.remote) { img.dataset.remote = 1; img.src = REMOTE[k]; } else slot.classList.add('missing'); };
+  img.src = 'img/d-' + k + '.png';
+});
+</script>
+</body>
+</html>

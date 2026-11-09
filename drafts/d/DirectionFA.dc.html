@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ECME Lab × 먼작귀 (재미용 예시)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nunito:wght@700;800;900&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+  /* 이미지 슬롯: fun/img/<이름>.png 를 찾아서 보여주고, 없으면 점선 자리표시 + 파일명을 보여줌 */
+  body { margin: 0; background: #fffdf7; color: #4a4036; font-family: 'Nunito', 'Noto Sans KR', sans-serif; font-size: 15.5px; line-height: 1.6; word-break: keep-all; }
+  .page { max-width: 1440px; margin: 0 auto; position: relative; overflow: hidden; background: #fffdf7; }
+  .dots { position: absolute; inset: 0; background-image: radial-gradient(#ffe7c2 2px, transparent 2.5px); background-size: 34px 34px; opacity: .55; pointer-events: none; }
+  .h { font-weight: 900; letter-spacing: -0.02em; }
+  .hand { font-family: 'Gaegu', 'Noto Sans KR', cursive; }
+  .card { background: #fff; border: 3px solid #4a4036; border-radius: 22px; box-shadow: 6px 6px 0 #4a4036; }
+  .pill { display: inline-block; padding: 5px 13px; border-radius: 999px; border: 2.5px solid #4a4036; font-weight: 800; font-size: 12.5px; background: #fff; }
+  .btn { display: inline-block; padding: 13px 26px; border-radius: 999px; border: 3px solid #4a4036; font-weight: 900; font-size: 15px; box-shadow: 4px 4px 0 #4a4036; background: #ffe066; }
+  .bubble { position: absolute; background: #fff; border: 2.5px solid #4a4036; border-radius: 18px; padding: 8px 14px; font-weight: 700; font-size: 15px; white-space: nowrap; z-index: 3; }
+  .bubble::after { content: ''; position: absolute; left: 22px; bottom: -11px; width: 14px; height: 14px; background: #fff; border-right: 2.5px solid #4a4036; border-bottom: 2.5px solid #4a4036; transform: rotate(45deg); }
+  .ch { position: relative; display: inline-flex; align-items: flex-end; justify-content: center; }
+  .ch img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 6px 0 rgba(74,64,54,.15)); }
+  .ch .ph { display: none; width: 100%; height: 100%; border: 3px dashed #c9bfae; border-radius: 18px; align-items: center; justify-content: center; text-align: center; font-size: 12px; color: #9a8c7c; padding: 8px; box-sizing: border-box; background: rgba(255,255,255,.6); }
+  .ch.missing img { display: none; } .ch.missing .ph { display: flex; }
+  .ch .ph b { display: block; font-size: 14px; color: #4a4036; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  .bob { animation: bob 2.6s ease-in-out infinite; } .bob2 { animation-delay: -.9s; } .bob3 { animation-delay: -1.7s; } .bob4 { animation-delay: -.4s; }
+  @keyframes peek { 0%,100% { transform: translateY(40%); } 50% { transform: translateY(0); } }
+  .peek { animation: peek 5s ease-in-out infinite; }
+  .tag { display: inline-block; padding: 3px 9px; border-radius: 999px; border: 2px solid #4a4036; font-size: 11.5px; font-weight: 800; }
+  .how { background: #fff; border: 3px solid #4a4036; border-radius: 16px; padding: 14px 18px; margin: 0 72px 10px; font-size: 13.5px; box-shadow: 4px 4px 0 #4a4036; }
+  .how code { background: #fff7d6; padding: 1px 6px; border-radius: 6px; }
+  .how.ok { display: none; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<style>#how{display:none!important}</style></head>
+<body>
+<div class="page">
+  <div class="dots"></div>
+
+  <div class="how" id="how">
+    <b>그림 넣는 법</b> — <code>fun/img/</code> 폴더에 아래 이름으로 PNG(투명 배경 추천)를 넣고 새로고침. 없는 건 점선 자리로 보여요.
+    <div id="need" style="margin-top:6px; color:#9a8c7c;"></div>
+  </div>
+
+  <!-- header -->
+  <div style="position: relative; display: flex; align-items: center; justify-content: space-between; height: 92px; padding: 0 72px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="ch" data-ch="chiikawa" style="width: 48px; height: 48px;"></span>
+      <div><div class="h" style="font-size: 20px;">ECME Lab</div><div style="font-size: 11.5px; color: #9a8c7c; font-weight: 700;">에너지변환재료공학 연구실 · DGIST</div></div>
+    </div>
+    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+      <span class="pill" style="background: #ffe066;">Home</span><span class="pill">Professor</span><span class="pill">People</span><span class="pill">Research</span><span class="pill">Publications</span><span class="pill">News</span><span class="pill">Contact</span>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="position: relative; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; padding: 40px 72px 0; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <span class="pill" style="background: #cfeeff; align-self: flex-start;">DGIST · 이주혁 교수 연구실</span>
+      <div class="h" style="font-size: 70px; line-height: 1.02;">움직임을<br><span style="background: linear-gradient(transparent 55%, #ffe066 55%);">전기로 바꾸는</span><br>작은 친구들</div>
+      <div style="font-size: 17.5px; color: #7a6c5c; max-width: 520px;">압전·마찰전기 나노발전기, 기능성 고분자, 바이오 압전 소재로 스스로 충전하는 전자기기를 만듭니다. 걷고, 누르고, 흔들면… 전기가 나와요.</div>
+      <div style="display: flex; gap: 12px;"><span class="btn">연구 보러 가기 →</span><span class="btn" style="background: #fff;">함께하기</span></div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <span class="pill" style="background: #ffd9e4;">논문 81</span><span class="pill" style="background: #d9f5e3;">특허 35</span><span class="pill" style="background: #e4dcff;">멤버 18</span><span class="pill" style="background: #ffe9c7;">소식 53</span>
+      </div>
+    </div>
+    <div style="position: relative; height: 540px;">
+      <div style="position: absolute; left: 0; right: 0; bottom: 30px; height: 150px; background: #d9f5e3; border: 3px solid #4a4036; border-radius: 50% 50% 22px 22px / 60% 60% 22px 22px;"></div>
+      <div class="bob" style="position: absolute; left: 40px; bottom: 120px;"><div class="bubble" style="left: 0; top: -58px;">와…</div><span class="ch" data-ch="chiikawa" style="width: 170px; height: 190px;"></span></div>
+      <div class="bob bob2" style="position: absolute; left: 240px; bottom: 150px;"><div class="bubble" style="left: 10px; top: -56px;">할 수 있어!</div><span class="ch" data-ch="hachiware" style="width: 170px; height: 200px;"></span></div>
+      <div class="bob bob3" style="position: absolute; left: 440px; bottom: 125px;"><div class="bubble" style="left: -10px; top: -56px;">우라~!!</div><span class="ch" data-ch="usagi" style="width: 170px; height: 220px;"></span></div>
+      <div class="hand" style="position: absolute; right: 10px; top: 30px; font-size: 26px; color: #e0795f; transform: rotate(8deg);">자가발전 연구실 ✦</div>
+      <span class="ch peek" data-ch="momonga" style="position: absolute; right: 10px; bottom: 40px; width: 110px; height: 120px;"></span>
+    </div>
+  </div>
+
+  <!-- research -->
+  <div style="position: relative; padding: 90px 72px 0;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 26px;">
+      <div><span class="pill" style="background: #ffd9e4;">RESEARCH</span><div class="h" style="font-size: 40px; margin-top: 10px;">다섯 가지 연구, <span style="background: linear-gradient(transparent 55%, #cfeeff 55%);">하나의 목표</span></div></div>
+      <a href="#" style="font-weight: 900; color: #e0795f;">전체 보기 →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 18px;">
+      <div class="card" style="padding: 22px 18px; background: #fff7d6;"><span class="ch" data-ch="chiikawa" style="width: 100%; height: 110px;"></span><div style="font-size: 11.5px; font-weight: 800; color: #9a8c7c; margin-top: 10px;">01</div><div style="font-weight: 900; font-size: 15.5px; line-height: 1.35; margin-top: 4px;">Energy Harvesting Technology</div><div class="hand" style="font-size: 16px; color: #e0795f; margin-top: 8px;">움직임 → 전기!</div></div>
+      <div class="card" style="padding: 22px 18px; background: #e4dcff;"><span class="ch" data-ch="hachiware" style="width: 100%; height: 110px;"></span><div style="font-size: 11.5px; font-weight: 800; color: #9a8c7c; margin-top: 10px;">02</div><div style="font-weight: 900; font-size: 15.5px; line-height: 1.35; margin-top: 4px;">Synthesis of Functional Polymers</div><div class="hand" style="font-size: 16px; color: #e0795f; margin-top: 8px;">손잡고 늘어나는 고분자</div></div>
+      <div class="card" style="padding: 22px 18px; background: #d9f5e3;"><span class="ch" data-ch="kani" style="width: 100%; height: 110px;"></span><div style="font-size: 11.5px; font-weight: 800; color: #9a8c7c; margin-top: 10px;">03</div><div style="font-weight: 900; font-size: 15.5px; line-height: 1.35; margin-top: 4px;">Bio-Piezoelectric Materials</div><div class="hand" style="font-size: 16px; color: #e0795f; margin-top: 8px;">몸에서 온 압전 소재</div></div>
+      <div class="card" style="padding: 22px 18px; background: #ffd9e4;"><span class="ch" data-ch="rakko" style="width: 100%; height: 110px;"></span><div style="font-size: 11.5px; font-weight: 800; color: #9a8c7c; margin-top: 10px;">04</div><div style="font-weight: 900; font-size: 15.5px; line-height: 1.35; margin-top: 4px;">Various Novel Applications</div><div class="hand" style="font-size: 16px; color: #e0795f; margin-top: 8px;">만져보는 촉각 센서</div></div>
+      <div class="card" style="padding: 22px 18px; background: #cfeeff;"><span class="ch" data-ch="shisa" style="width: 100%; height: 110px;"></span><div style="font-size: 11.5px; font-weight: 800; color: #9a8c7c; margin-top: 10px;">05</div><div style="font-weight: 900; font-size: 15.5px; line-height: 1.35; margin-top: 4px;">AI-Integrated Research Platform</div><div class="hand" style="font-size: 16px; color: #e0795f; margin-top: 8px;">똑똑한 친구 합류</div></div>
+    </div>
+  </div>
+
+  <!-- stats with the armor guys -->
+  <div style="position: relative; margin: 80px 72px 0; padding: 26px 30px; border-radius: 22px; background: #fff; border: 3px solid #4a4036; box-shadow: 6px 6px 0 #4a4036; display: grid; grid-template-columns: 180px 1fr 1fr 1fr 1fr 180px; gap: 16px; align-items: center;">
+    <span class="ch bob" data-ch="yoroi" style="height: 150px;"></span>
+    <div style="text-align: center;"><div class="h" style="font-size: 44px;">81</div><div class="hand" style="font-size: 20px; color: #9a8c7c;">논문</div></div>
+    <div style="text-align: center;"><div class="h" style="font-size: 44px;">35</div><div class="hand" style="font-size: 20px; color: #9a8c7c;">특허</div></div>
+    <div style="text-align: center;"><div class="h" style="font-size: 44px;">18</div><div class="hand" style="font-size: 20px; color: #9a8c7c;">멤버</div></div>
+    <div style="text-align: center;"><div class="h" style="font-size: 44px;">53</div><div class="hand" style="font-size: 20px; color: #9a8c7c;">소식</div></div>
+    <span class="ch bob bob4" data-ch="yoroi2" style="height: 150px;"></span>
+    <div class="hand" style="grid-column: 1 / -1; text-align: center; font-size: 22px; color: #e0795f;">"토벌 보고서… 아니, 연구 보고서입니다…"</div>
+  </div>
+
+  <!-- news + PI -->
+  <div style="position: relative; display: grid; grid-template-columns: 7fr 5fr; gap: 36px; padding: 90px 72px 0; align-items: start;">
+    <div>
+      <span class="pill" style="background: #d9f5e3;">NEWS</span><div class="h" style="font-size: 36px; margin: 10px 0 20px;">요즘 소식</div>
+      <div style="display: grid; gap: 14px;">
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 100px 1fr 90px; gap: 16px; align-items: center;"><div><span class="tag" style="background: #d9f5e3;">AWARD</span><div style="font-size: 12px; color: #9a8c7c; font-weight: 700; margin-top: 6px;">2026.06.12</div></div><div style="font-weight: 700;">Gerald Selasie Gbadam · 류연경 석∙박사과정, 2026 NGPT Best Oral Award 수상</div><span class="ch" data-ch="kurimanju" style="height: 80px;"></span></div>
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 100px 1fr 90px; gap: 16px; align-items: center;"><div><span class="tag" style="background: #d9f5e3;">AWARD</span><div style="font-size: 12px; color: #9a8c7c; font-weight: 700; margin-top: 6px;">2026.06.12</div></div><div style="font-weight: 700;">곽수정 석∙박사과정 · 최다은 석사과정, 2026 NGPT Best Poster Award 수상</div><span class="ch" data-ch="usagi" style="height: 80px;"></span></div>
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 100px 1fr 90px; gap: 16px; align-items: center;"><div><span class="tag" style="background: #cfeeff;">PAPER</span><div style="font-size: 12px; color: #9a8c7c; font-weight: 700; margin-top: 6px;">2025.10</div></div><div style="font-weight: 700;">Gerald Selasie Gbadam 석∙박사과정 1저자 논문, Nature Communications 게재 확정</div><span class="ch" data-ch="hachiware" style="height: 80px;"></span></div>
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 100px 1fr 90px; gap: 16px; align-items: center;"><div><span class="tag" style="background: #ffd9e4;">PRESS</span><div style="font-size: 12px; color: #9a8c7c; font-weight: 700; margin-top: 6px;">2025.11.03</div></div><div style="font-weight: 700;">연합뉴스 · "배터리 교체, 충전 No" 마찰전기 이용한 나노발전기 개발</div><span class="ch" data-ch="rakko" style="height: 80px;"></span></div>
+      </div>
+      <a href="#" style="display: inline-block; margin-top: 16px; font-weight: 900; color: #e0795f;">소식 53개 전부 보기 →</a>
+    </div>
+    <div style="position: relative;">
+      <span class="pill" style="background: #e4dcff;">PROFESSOR</span><div class="h" style="font-size: 36px; margin: 10px 0 20px;">지도교수</div>
+      <div class="card" style="padding: 26px; position: relative;">
+        <div style="display: flex; gap: 16px; align-items: center;"><img src="prof.jpg" style="width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid #4a4036; display: block;"><div><div class="h" style="font-size: 22px;">이주혁 Ju-Hyuck Lee</div><div style="font-size: 13px; color: #9a8c7c; font-weight: 700;">Associate Professor · 에너지공학과, DGIST</div></div></div>
+        <div style="margin-top: 16px; font-size: 14.5px; line-height: 1.75;">Ph.D. SKKU (2016) · Postdoc UC Berkeley &amp; LBNL (2016–2018) · DGIST 2018~<br>기능성 나노소재, 압전·마찰전기 발전기, 자가발전 전자기기, 촉각 센서</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;"><span class="tag" style="background: #fff7d6;">Nano Energy ECR Board</span><span class="tag" style="background: #ffd9e4;">KIM Emerging Innovator 2025</span><span class="tag" style="background: #cfeeff;">IEEE-ISAF Young Investigator</span></div>
+        <span class="ch" data-ch="shisa" style="position: absolute; right: -20px; bottom: -30px; width: 110px; height: 110px;"></span>
+      </div>
+      <div style="position: relative; margin-top: 60px; display: flex; justify-content: flex-end; gap: 10px; align-items: flex-end;">
+        <div class="bubble" style="position: static; margin-bottom: 40px;">이거 재미있다…</div><span class="ch bob" data-ch="kurimanju" style="width: 130px; height: 140px;"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer parade -->
+  <div style="position: relative; margin-top: 90px; background: #d9f5e3; border-top: 3px solid #4a4036; padding: 36px 72px 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;">
+      <div style="font-size: 13px; line-height: 1.8; flex: none;"><b>ECME Lab · DGIST</b><br>Room E6-411, Dept. of Energy Science &amp; Engineering, DGIST, Daegu 42988<br>© JU HYUCK LEE's Group</div>
+      <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end;">
+        <span class="ch" data-ch="chiikawa" style="height: 72px;"></span><span class="ch" data-ch="hachiware" style="height: 76px;"></span><span class="ch" data-ch="usagi" style="height: 84px;"></span><span class="ch" data-ch="kurimanju" style="height: 70px;"></span><span class="ch" data-ch="shisa" style="height: 68px;"></span><span class="ch" data-ch="momonga" style="height: 66px;"></span><span class="ch" data-ch="kani" style="height: 60px;"></span><span class="ch" data-ch="rakko" style="height: 80px;"></span><span class="ch" data-ch="yoroi" style="height: 90px;"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 캐릭터 → 파일명. 같은 캐릭터를 여러 자리에 써도 파일은 하나.
+const NAMES = { chiikawa: '치이카와', hachiware: '하치와레', usagi: '우사기', kurimanju: '쿠리만쥬', shisa: '시사', momonga: '모몽가', kani: '카니', rakko: '랏코', yoroi: '갑옷 아저씨', yoroi2: '갑옷 아저씨 2 (없으면 yoroi 재사용)' };
+// 로컬 파일이 없으면 팬 위키(chiikawa.fandom.com) 그림을 직접 불러옴 — 개인 열람용
+const W = 'https://static.wikia.nocookie.net/chiikawa/images/';
+const REMOTE = {
+  chiikawa: W + 'e/e3/ChiikawaModerDesign.png/revision/latest/scale-to-width-down/600?cb=20260921112646',
+  hachiware: W + '9/9f/HachiwareModernDesign.png/revision/latest/scale-to-width-down/600?cb=20260921113022',
+  usagi: W + 'b/b6/UsagiModernDesign.png/revision/latest/scale-to-width-down/600?cb=20260921114102',
+  kurimanju: W + '3/30/KuriManjuModernDesign.png/revision/latest/scale-to-width-down/600?cb=20260921113402',
+  shisa: W + 'c/c6/ShisaModernDesign.png/revision/latest/scale-to-width-down/600?cb=20260921113932',
+  momonga: W + '7/7f/MomongaModernDesign.png/revision/latest/scale-to-width-down/600?cb=20260921113554',
+  kani: W + '7/76/Kani-removebg-preview_%281%29.png/revision/latest/scale-to-width-down/600?cb=20260512101702',
+  rakko: W + '6/69/RakkoModernDesign.png/revision/latest/scale-to-width-down/600?cb=20260921113735',
+  yoroi: W + '7/7e/TheLaborYoroiSan.png/revision/latest/scale-to-width-down/600?cb=20240709071623',
+  yoroi2: W + '2/2e/OneRamenYoroiSan.png/revision/latest/scale-to-width-down/600?cb=20240709071623',
+};
+const missing = new Set();
+document.querySelectorAll('.ch').forEach((slot) => {
+  const key = slot.dataset.ch; if (!slot.style.width) slot.style.width = 'auto';
+  const img = new Image(); img.alt = NAMES[key] || key;
+  const ph = document.createElement('span'); ph.className = 'ph'; ph.innerHTML = '<span><b>' + (NAMES[key] || key) + '</b>img/' + key + '.png</span>';
+  slot.append(img, ph);
+  const tryLoad = (k) => { img.src = 'img/' + k + '.png?' + Date.now(); };
+  img.onerror = () => {
+    if (!img.dataset.remote && REMOTE[key]) { img.dataset.remote = 1; img.src = REMOTE[key]; return; }
+    if (key === 'yoroi2' && !img.dataset.retried) { img.dataset.retried = 1; img.dataset.remote = ''; tryLoad('yoroi'); return; }
+    slot.classList.add('missing'); missing.add(key); paintNeed(); };
+  img.onload = () => { slot.classList.remove('missing'); paintNeed(); };
+  tryLoad(key);
+});
+function paintNeed() {
+  const list = [...missing].filter((k) => k !== 'yoroi2').map((k) => 'img/' + k + '.png (' + NAMES[k] + ')');
+  document.getElementById('need').textContent = list.length ? '아직 없는 파일: ' + list.join(', ') : '';
+  document.getElementById('how').classList.toggle('ok', list.length === 0);
+}
+</script>
+</body>
+</html>

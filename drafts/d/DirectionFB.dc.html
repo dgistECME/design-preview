@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ECME Lab × 포켓몬 (재미용 예시)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+  /* 포켓몬 도감(Pokédex) 느낌: 빨간 상단 바, 둥근 렌즈, 타입 배지, TCG 카드 같은 연구 카드. 그림은 PokeAPI 공식 일러스트를 불러옴(개인 열람용). */
+  :root { --red: #e3350d; --dark: #1f2a3a; --cream: #fff9ef; --yellow: #ffcb05; --blue: #3b5ba5; --ink: #2b2b2b; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font-family: 'Nunito', 'Noto Sans KR', sans-serif; font-size: 15.5px; line-height: 1.6; word-break: keep-all; }
+  .page { max-width: 1440px; margin: 0 auto; position: relative; overflow: hidden; }
+  .h { font-weight: 900; letter-spacing: -0.02em; }
+  .ball { background: radial-gradient(circle at 50% 50%, #fff 0 10px, var(--ink) 10px 14px, transparent 14px), linear-gradient(to bottom, var(--red) 0 48%, var(--ink) 48% 52%, #fff 52% 100%); border-radius: 50%; border: 3px solid var(--ink); display: inline-block; }
+  .type { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; color: #fff; font-weight: 900; font-size: 12px; text-shadow: 0 1px 0 rgba(0,0,0,.3); border: 2px solid rgba(0,0,0,.25); }
+  .t-elec { background: #f7d02c; color: #4a3b00; text-shadow: none; } .t-steel { background: #b7b7ce; color: #2b2b2b; text-shadow: none; } .t-grass { background: #7ac74c; } .t-psy { background: #f95587; } .t-ghost { background: #735797; } .t-fire { background: #ee8130; } .t-water { background: #6390f0; } .t-normal { background: #a8a77a; }
+  .card { background: #fff; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 0 8px 0 rgba(31,42,58,.25); overflow: hidden; }
+  .tcg { border: 10px solid var(--yellow); border-radius: 16px; background: #fff; box-shadow: 0 10px 24px rgba(0,0,0,.15); overflow: hidden; display: flex; flex-direction: column; }
+  .tcg .art { background: radial-gradient(circle at 50% 60%, #fff, #e8f4ff 70%); border-bottom: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; height: 170px; }
+  .tcg .art img { height: 150px; }
+  .ch img { display: block; filter: drop-shadow(0 8px 0 rgba(31,42,58,.18)); }
+  .ch.missing img { visibility: hidden; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .bob { animation: bob 2.8s ease-in-out infinite; } .bob2 { animation-delay: -1s; } .bob3 { animation-delay: -1.9s; }
+  @keyframes blink { 0%,90%,100% { opacity: 1; } 95% { opacity: .2; } }
+  .lens { width: 54px; height: 54px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #bfe9ff, #2d8fd6 60%, #0c4a86); border: 4px solid #fff; box-shadow: 0 0 0 3px var(--dark); animation: blink 4s infinite; }
+  .dex { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center; padding: 14px 18px; background: #fff; border: 3px solid var(--ink); border-radius: 14px; }
+  .dex .no { font-weight: 900; color: var(--red); font-size: 13px; }
+  @media (max-width: 1100px) { .page > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<style>#how{display:none!important}</style></head>
+<body>
+<div class="page">
+  <!-- pokedex top bar -->
+  <div style="background: var(--red); border-bottom: 6px solid var(--dark); padding: 14px 72px; display: flex; align-items: center; justify-content: space-between; color: #fff;">
+    <div style="display: flex; align-items: center; gap: 16px;"><div class="lens"></div><div style="display: flex; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5a5a; border: 2px solid #7a0000;"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #ffd34d; border: 2px solid #7a5a00;"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #5ad96a; border: 2px solid #0a5a1a;"></span></div><div class="h" style="font-size: 20px; margin-left: 8px;">ECME DEX</div></div>
+    <div style="display: flex; gap: 8px; font-weight: 900; font-size: 13px;">
+      <span style="padding: 6px 14px; border-radius: 999px; background: #fff; color: var(--red);">Home</span><span style="padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7);">Professor</span><span style="padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7);">People</span><span style="padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7);">Research</span><span style="padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7);">Publications</span><span style="padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7);">News</span><span style="padding: 6px 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7);">Contact</span>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="position: relative; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; padding: 56px 72px 0; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; gap: 8px;"><span class="type t-elec">⚡ 전기</span><span class="type t-steel">⚙ 강철</span><span class="type t-grass">🌿 풀</span></div>
+      <div class="h" style="font-size: 66px; line-height: 1.02; color: var(--dark);">움직임을 전기로!<br><span style="color: var(--red);">자가발전</span> 포켓몬 연구소</div>
+      <div style="font-size: 17.5px; color: #5a5a5a; max-width: 520px;">압전·마찰전기 나노발전기, 기능성 고분자, 바이오 압전 소재. 걷고, 누르고, 흔들면 전기가 나오는 기술을 키웁니다. DGIST 이주혁 교수 연구실.</div>
+      <div style="display: flex; gap: 12px;"><span style="padding: 13px 26px; border-radius: 999px; background: var(--red); color: #fff; font-weight: 900; border: 3px solid var(--dark); box-shadow: 0 5px 0 var(--dark);">연구 도감 보기 →</span><span style="padding: 13px 26px; border-radius: 999px; background: #fff; font-weight: 900; border: 3px solid var(--dark); box-shadow: 0 5px 0 var(--dark);">트레이너 모집</span></div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 560px;">
+        <div class="dex"><span class="ball" style="width: 40px; height: 40px;"></span><div><div class="no">No.081</div><div class="h" style="font-size: 22px;">81 <small style="font-size: 12px; font-weight: 700; color: #777;">논문</small></div></div></div>
+        <div class="dex"><span class="ball" style="width: 40px; height: 40px;"></span><div><div class="no">No.035</div><div class="h" style="font-size: 22px;">35 <small style="font-size: 12px; font-weight: 700; color: #777;">특허</small></div></div></div>
+        <div class="dex"><span class="ball" style="width: 40px; height: 40px;"></span><div><div class="no">No.018</div><div class="h" style="font-size: 22px;">18 <small style="font-size: 12px; font-weight: 700; color: #777;">트레이너</small></div></div></div>
+        <div class="dex"><span class="ball" style="width: 40px; height: 40px;"></span><div><div class="no">No.053</div><div class="h" style="font-size: 22px;">53 <small style="font-size: 12px; font-weight: 700; color: #777;">소식</small></div></div></div>
+      </div>
+    </div>
+    <div style="position: relative; height: 520px;">
+      <div style="position: absolute; left: 20px; right: 20px; bottom: 20px; height: 160px; background: #bfe3a0; border: 3px solid var(--dark); border-radius: 50% 50% 20px 20px / 70% 70% 20px 20px;"></div>
+      <span class="ch bob" data-ch="25" style="position: absolute; left: 50px; bottom: 110px;"><img style="height: 230px;" alt="피카츄"></span>
+      <span class="ch bob bob2" data-ch="81" style="position: absolute; left: 290px; bottom: 170px;"><img style="height: 150px;" alt="코일"></span>
+      <span class="ch bob bob3" data-ch="181" style="position: absolute; left: 420px; bottom: 100px;"><img style="height: 250px;" alt="전룡"></span>
+      <span class="ch" data-ch="479" style="position: absolute; right: 0; top: 10px;"><img style="height: 130px;" alt="로토무"></span>
+      <div style="position: absolute; left: 230px; top: 20px; background: #fff; border: 3px solid var(--dark); border-radius: 16px; padding: 8px 14px; font-weight: 900;">⚡ 피카츄가 밟았다! 발전기가 전기를 만들었다!</div>
+    </div>
+  </div>
+
+  <!-- research as TCG cards -->
+  <div style="position: relative; padding: 90px 72px 0;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px;">
+      <div><span class="type t-elec">RESEARCH DEX</span><div class="h" style="font-size: 40px; margin-top: 10px; color: var(--dark);">다섯 가지 연구 카드</div></div>
+      <span style="font-weight: 900; color: var(--red);">전체 도감 →</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 18px;">
+      <div class="tcg"><div style="display: flex; justify-content: space-between; padding: 8px 12px; font-weight: 900; font-size: 13px;"><span>Energy Harvesting</span><span style="color: var(--red);">HP 120</span></div><div class="art"><span class="ch" data-ch="25"><img alt="피카츄"></span></div><div style="padding: 12px 14px;"><span class="type t-elec" style="font-size: 11px;">전기</span><div style="font-weight: 900; margin-top: 8px;">⚡ 압전 방전 <span style="float: right;">81</span></div><div style="font-size: 12.5px; color: #666;">움직임을 전기로 바꾼다. 밟을수록 세진다.</div></div></div>
+      <div class="tcg"><div style="display: flex; justify-content: space-between; padding: 8px 12px; font-weight: 900; font-size: 13px;"><span>Functional Polymers</span><span style="color: var(--red);">HP 110</span></div><div class="art"><span class="ch" data-ch="1"><img alt="이상해씨"></span></div><div style="padding: 12px 14px;"><span class="type t-grass" style="font-size: 11px;">풀</span><div style="font-weight: 900; margin-top: 8px;">🌿 고분자 합성 <span style="float: right;">70</span></div><div style="font-size: 12.5px; color: #666;">길게 늘어나는 기능성 사슬을 만든다.</div></div></div>
+      <div class="tcg"><div style="display: flex; justify-content: space-between; padding: 8px 12px; font-weight: 900; font-size: 13px;"><span>Bio-Piezoelectric</span><span style="color: var(--red);">HP 100</span></div><div class="art"><span class="ch" data-ch="133"><img alt="이브이"></span></div><div style="padding: 12px 14px;"><span class="type t-normal" style="font-size: 11px;">노말</span><div style="font-weight: 900; margin-top: 8px;">🧬 생체 압전 <span style="float: right;">60</span></div><div style="font-size: 12.5px; color: #666;">몸에서 온 재료가 전기를 낸다. 진화 가능.</div></div></div>
+      <div class="tcg"><div style="display: flex; justify-content: space-between; padding: 8px 12px; font-weight: 900; font-size: 13px;"><span>Novel Applications</span><span style="color: var(--red);">HP 130</span></div><div class="art"><span class="ch" data-ch="81"><img alt="코일"></span></div><div style="padding: 12px 14px;"><span class="type t-steel" style="font-size: 11px;">강철</span><div style="font-weight: 900; margin-top: 8px;">🤖 촉각 센서 <span style="float: right;">90</span></div><div style="font-size: 12.5px; color: #666;">사람 손끝처럼 만지고 느끼는 전자기기.</div></div></div>
+      <div class="tcg"><div style="display: flex; justify-content: space-between; padding: 8px 12px; font-weight: 900; font-size: 13px;"><span>AI Platform</span><span style="color: var(--red);">HP 150</span></div><div class="art"><span class="ch" data-ch="479"><img alt="로토무"></span></div><div style="padding: 12px 14px;"><span class="type t-ghost" style="font-size: 11px;">고스트·전기</span><div style="font-weight: 900; margin-top: 8px;">🧠 데이터 폭풍 <span style="float: right;">100</span></div><div style="font-size: 12.5px; color: #666;">AI가 연구 장비 속으로 들어가 실험을 돕는다.</div></div></div>
+    </div>
+  </div>
+
+  <!-- news + gym leader -->
+  <div style="position: relative; display: grid; grid-template-columns: 7fr 5fr; gap: 36px; padding: 90px 72px 0; align-items: start;">
+    <div>
+      <span class="type t-water">TRAINER LOG</span><div class="h" style="font-size: 36px; margin: 10px 0 20px; color: var(--dark);">최근 배틀 기록</div>
+      <div style="display: grid; gap: 14px;">
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="type t-elec" style="font-size: 11px;">AWARD</span><div style="font-size: 12px; color: #888; font-weight: 700; margin-top: 6px;">2026.06.12</div></div><div style="font-weight: 700;">Gerald Selasie Gbadam · 류연경 석∙박사과정, 2026 NGPT Best Oral Award 수상 — 효과는 굉장했다!</div><span class="ch" data-ch="135"><img style="height: 70px;" alt="쥬피썬더"></span></div>
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="type t-elec" style="font-size: 11px;">AWARD</span><div style="font-size: 12px; color: #888; font-weight: 700; margin-top: 6px;">2026.06.12</div></div><div style="font-weight: 700;">곽수정 석∙박사과정 · 최다은 석사과정, 2026 NGPT Best Poster Award 수상</div><span class="ch" data-ch="172"><img style="height: 70px;" alt="피츄"></span></div>
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="type t-water" style="font-size: 11px;">PAPER</span><div style="font-size: 12px; color: #888; font-weight: 700; margin-top: 6px;">2025.10</div></div><div style="font-weight: 700;">Gerald Selasie Gbadam 석∙박사과정 1저자 논문, Nature Communications 게재 확정 — 레벨 업!</div><span class="ch" data-ch="26"><img style="height: 70px;" alt="라이츄"></span></div>
+        <div class="card" style="padding: 16px 20px; display: grid; grid-template-columns: 110px 1fr 80px; gap: 16px; align-items: center;"><div><span class="type t-fire" style="font-size: 11px;">PRESS</span><div style="font-size: 12px; color: #888; font-weight: 700; margin-top: 6px;">2025.11.03</div></div><div style="font-weight: 700;">연합뉴스 · "배터리 교체, 충전 No" 마찰전기 이용한 나노발전기 개발</div><span class="ch" data-ch="100"><img style="height: 70px;" alt="찌리리공"></span></div>
+      </div>
+    </div>
+    <div>
+      <span class="type t-psy">GYM LEADER</span><div class="h" style="font-size: 36px; margin: 10px 0 20px; color: var(--dark);">체육관 관장</div>
+      <div class="card" style="padding: 26px; position: relative; overflow: visible;">
+        <div style="display: flex; gap: 16px; align-items: center;"><img src="prof.jpg" style="width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid var(--ink); display: block;"><div><div class="h" style="font-size: 22px;">이주혁 Ju-Hyuck Lee</div><div style="font-size: 13px; color: #777; font-weight: 700;">Associate Professor · 에너지공학과, DGIST</div></div></div>
+        <div style="margin-top: 16px; font-size: 14.5px; line-height: 1.75;">Ph.D. SKKU (2016) · Postdoc UC Berkeley &amp; LBNL (2016–2018) · DGIST 2018~<br>특기: 기능성 나노소재, 압전·마찰전기 발전기, 자가발전 전자기기, 촉각 센서</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;"><span class="type t-elec" style="font-size: 11px;">배지: Nano Energy ECR Board</span><span class="type t-steel" style="font-size: 11px;">배지: KIM Emerging Innovator 2025</span><span class="type t-psy" style="font-size: 11px;">배지: IEEE-ISAF Young Investigator</span></div>
+        <span class="ch" data-ch="143" style="position: absolute; right: -30px; bottom: -40px;"><img style="height: 120px;" alt="잠만보"></span>
+      </div>
+      <div style="margin-top: 60px; display: flex; justify-content: flex-end; align-items: flex-end; gap: 10px;"><div style="background: #fff; border: 3px solid var(--dark); border-radius: 16px; padding: 8px 14px; font-weight: 900; margin-bottom: 30px;">잠만보가 실험실을 막고 있다…</div><span class="ch" data-ch="702"><img style="height: 110px;" alt="데덴네"></span></div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="position: relative; margin-top: 90px; background: var(--dark); color: #fff; padding: 36px 72px 24px; border-top: 6px solid var(--red);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;">
+      <div style="font-size: 13px; line-height: 1.8;"><b>ECME Lab · DGIST</b><br>Room E6-411, Dept. of Energy Science &amp; Engineering, DGIST, Daegu 42988<br>© JU HYUCK LEE's Group · 비공식 팬 콘셉트 예시 · 캐릭터 저작권은 각 원저작자에게 있음</div>
+      <div style="display: flex; gap: 8px; align-items: flex-end;"><span class="ch" data-ch="4"><img style="height: 70px;" alt="파이리"></span><span class="ch" data-ch="7"><img style="height: 70px;" alt="꼬부기"></span><span class="ch" data-ch="1"><img style="height: 70px;" alt="이상해씨"></span><span class="ch" data-ch="25"><img style="height: 76px;" alt="피카츄"></span><span class="ch" data-ch="94"><img style="height: 80px;" alt="팬텀"></span><span class="ch" data-ch="145"><img style="height: 90px;" alt="썬더"></span></div>
+    </div>
+  </div>
+</div>
+<script>
+// PokeAPI 공식 일러스트 (도감 번호). 로컬 img/p<번호>.png 가 있으면 그걸 먼저 씀.
+const ART = (n) => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + n + '.png';
+document.querySelectorAll('.ch').forEach((slot) => {
+  const n = slot.dataset.ch, img = slot.querySelector('img');
+  img.onerror = () => { if (!img.dataset.remote) { img.dataset.remote = 1; img.src = ART(n); } else slot.classList.add('missing'); };
+  img.src = 'img/p' + n + '.png';
+});
+</script>
+</body>
+</html>
