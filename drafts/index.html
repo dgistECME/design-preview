@@ -121,6 +121,11 @@ footer { padding-block: 40px 60px; color: var(--mute); font-size: 13px; }
 .rhead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
 .trnote { margin: 0; font-size: 13px; color: var(--mute); }
 .trtag { color: var(--mute); font-size: 12px; }
+.cands { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+.cands .lbl { font-weight: 600; margin-right: 4px; }
+.cands a, a.tog { text-decoration: none; color: inherit; }
+.opts.chips { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+.cand-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; vertical-align: middle; }
 @media (max-width: 640px) { .trow { grid-template-columns: minmax(0, 1fr) 80px 24px; } .save { margin-left: 0; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -136,6 +141,7 @@ footer { padding-block: 40px 60px; color: var(--mute); font-size: 13px; }
     <li><b>2</b><span data-i18n="step2"></span></li>
     <li><b>3</b><span data-i18n="step3"></span></li>
   </ol>
+  <div class="cands"><span class="lbl" data-i18n="candLbl"></span><span id="cands"></span></div>
 </header>
 
 <div class="bar"><div class="wrap">
@@ -153,6 +159,15 @@ footer { padding-block: 40px 60px; color: var(--mute); font-size: 13px; }
       <span class="qt" data-i18n="dirQ"></span>
       <div class="opts" id="dirs"></div>
       <input id="dirNote" type="text" data-i18n-ph="dirNotePh" style="border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;">
+    </div>
+    <div class="q"><span class="qt"><span data-i18n="colorQ"></span> <small data-i18n="multiHint"></small></span><div class="opts chips" id="opt-colors"></div>
+      <input id="colorNote" type="text" data-i18n-ph="colorNotePh" style="border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;"></div>
+    <div class="q"><span class="qt"><span data-i18n="moodQ"></span> <small data-i18n="multiHint"></small></span><div class="opts chips" id="opt-mood"></div></div>
+    <div class="q"><span class="qt" data-i18n="motionQ"></span><div class="opts chips" id="opt-motion"></div></div>
+    <div class="q"><span class="qt"><span data-i18n="firstQ"></span> <small data-i18n="multiHint"></small></span><div class="opts chips" id="opt-first"></div></div>
+    <div class="q">
+      <label for="good" data-i18n="goodQ"></label>
+      <textarea id="good" rows="3" data-i18n-ph="goodPh"></textarea>
     </div>
     <div class="q">
       <label for="overall"><span data-i18n="fixQ"></span> <small data-i18n="fixHint"></small></label>
@@ -179,7 +194,8 @@ footer { padding-block: 40px 60px; color: var(--mute); font-size: 13px; }
     <p class="lead" data-i18n="sendLead" style="margin:0"></p>
     <div class="q"><label for="rname" data-i18n="nameLabel"></label><input id="rname" type="text" data-i18n-ph="namePh" style="border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;max-width:360px;"></div>
     <div class="q"><label for="sendText" data-i18n="previewLabel"></label><textarea id="sendText" rows="9" readonly></textarea></div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn primary" id="copyBtn" data-i18n="copyBtn"></button><span class="save" id="copyMsg" style="margin-left:0"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn primary" id="submitBtn" data-i18n="submitBtn" hidden></button><span class="save" id="submitMsg" style="margin-left:0"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" id="copyBtn" data-i18n="copyBtn"></button><span class="save" id="copyMsg" style="margin-left:0"></span></div>
   </div>
 </section>
 
@@ -225,13 +241,28 @@ const I18N = {
     trBtn: '의견을 한국어로 번역', trBusy: '번역 중…', trShow: '원문 보기', trHide: '번역 보기',
     trInfo: 'Claude가 번역합니다. 처음 한 번 사용 허락을 묻고, 본인 Claude 사용량이 쓰입니다.', trDone: '번역됨 · Claude', trOff: '이 계정에서는 번역 기능을 쓸 수 없어요.',
     trLimit: '잠시 후 다시 시도해 주세요. 사용량 한도에 걸렸을 수 있어요.', trFail: '번역하지 못했어요. 다시 눌러 주세요.', trNothing: '번역할 의견이 없어요.', trLabel: '번역',
-    leadShare: 'DGIST 에너지공학과 이주혁 교수 연구실(ECME Lab) 홈페이지를 새로 다듬고 있습니다. 지금까지 만든 시안 59개를 방향별로 모았습니다. 둘러보고 마음에 드는 안과 방향, 고치면 좋을 점을 남겨 주세요. 입력한 내용은 이 브라우저에 저장되고, 맨 아래 "의견 보내기"에서 복사해 보내 주시면 됩니다.',
-    jumpSend: '의견 보내기', savedLocal: '이 브라우저에 저장됨', sendTitle: '의견 보내기',
+    leadShare: 'DGIST 에너지공학과 이주혁 교수 연구실(ECME Lab) 홈페이지를 새로 다듬고 있습니다. 지금까지 만든 시안 59개를 방향별로 모았습니다. 둘러보고 마음에 드는 안에 ★를 (여러 개 가능) 누르고, 안마다 의견과 색감·분위기 같은 전체 의견을 남긴 뒤 맨 아래 "보내기"를 눌러 주세요. 최종 후보 3안은 실제로 작동하는 사이트로도 볼 수 있어요.', titleShare: 'ECME 홈페이지 디자인 투표',
+    jumpSend: '보내기', savedLocal: '이 브라우저에 저장됨', sendTitle: '의견 보내기',
     sendLead: '이름을 적고 "의견 복사"를 누른 뒤, 이 페이지를 보내 준 사람에게 카톡이나 메일로 붙여넣어 보내 주세요.',
     nameLabel: '이름', namePh: '예: 홍길동', previewLabel: '보낼 내용 미리보기', copyBtn: '의견 복사',
     copied: '복사됐어요. 카톡이나 메일에 붙여넣어 보내 주세요.', copyFail: '자동 복사가 안 돼서 내용을 선택해 두었어요. Ctrl+C(휴대폰은 길게 눌러 복사)로 복사해 주세요.',
     sHead: '[ECME 홈페이지 시안 의견]', sName: '이름', sPicks: '★ 좋은 안', sDir: '선호 방향', sFix: '고칠 점', sNotes: '시안별 의견', sNone: '(없음)',
     dirs: [['calm', '차분·신뢰형', '흰 바탕 + 포인트 색 하나 (AN, AO, AP, AQ, AM 등)'], ['photo', '사진·잡지형', '사진과 큰 글씨 중심 (F, AK, AC, M 등)'], ['bright', '밝고 컬러풀', '그라데이션, 유리 카드 (S, T, U, V, W, AJ 등)'], ['geo', '기하·모션형', '궤도, 파형, 격자 모티프 (N, P, Q, R, AH 등)'], ['dark', '다크 에디토리얼', '지금 사이트 (C)'], ['other', '기타', '아래에 직접 적어 주세요']],
+    candLbl: '최종 후보 3안 (실제 사이트):', candSite: '실제 사이트 ↗', candBadge: '최종 후보',
+    step2Share: '좋은 안에 ★ — 개수 제한 없이 여러 개', multiHint: '— 여러 개 골라도 돼요',
+    colorQ: '어떤 색감이 좋나요?', colorNotePh: '색감에 대해 덧붙일 말 (예: 파랑은 좋은데 더 차분했으면)',
+    moodQ: '어떤 분위기가 좋나요?', motionQ: '움직임(애니메이션)은 어느 정도가 좋나요?', firstQ: '첫 화면에 먼저 보였으면 하는 것',
+    goodQ: '전체적으로 좋았던 점', goodPh: '예: BD의 카드 배치, BB의 단체사진 첫 화면이 좋았어요.',
+    submitBtn: '투표·의견 보내기', resubmitBtn: '다시 보내기 (수정본으로 바뀜)', needName: '이름을 적어 주세요.', needAny: '★ 하나 이상 고르거나 의견을 적어 주세요.',
+    sending: '보내는 중…', sent: '접수됐어요. 고마워요! 고친 뒤 다시 보내면 마지막 것만 집계돼요.', sendFail: '보내지 못했어요. 잠시 후 다시 눌러 주세요. 안 되면 아래 "의견 복사"로 보내 주세요.',
+    sendLeadForm: '이름을 적고 "투표·의견 보내기"를 누르면 연구실 집계표에 바로 저장됩니다. 같은 이름으로 다시 보내면 마지막 것으로 바뀌어요.',
+    loadingRes: '집계 불러오는 중…', resFail: '집계를 불러오지 못했어요.', publicNote: '보낸 뒤 집계에 보이기까지 몇 분 걸릴 수 있어요.',
+    colorsTally: '선호 색감', moodTally: '선호 분위기', motionTally: '선호 움직임', firstTally: '첫 화면에 보였으면', goodList: '좋았던 점',
+    sColors: '선호 색감', sMood: '분위기', sMotion: '움직임', sFirst: '첫 화면', sGood: '좋은 점',
+    colors: [['white', '흰 바탕 + 포인트 1색'], ['navy', '네이비·짙은 남색'], ['blue', '파랑 계열'], ['teal', '틸·그린 계열'], ['warm', '따뜻한 톤 (앰버·코랄·아이보리)'], ['pastel', '파스텔'], ['mono', '흑백 미니멀'], ['grad', '그라데이션·컬러풀'], ['dark', '어두운 배경 (다크)']],
+    mood: [['clean', '깔끔·전문적'], ['friendly', '따뜻·친근'], ['bold', '대담·임팩트'], ['classic', '전통 대학 연구실'], ['tech', '테크·미래적'], ['magazine', '잡지·사진 중심'], ['playful', '귀엽고 재미있게']],
+    motion: [['none', '거의 없게'], ['once', '처음 한 번만 은은하게'], ['some', '적당히'], ['rich', '화려하게']],
+    first: [['photo', '단체사진'], ['research', '연구 분야'], ['news', '최근 뉴스·수상'], ['pi', '교수 소개'], ['pubs', '대표 논문'], ['join', '학생 모집 안내'], ['stats', '숫자 (논문·특허 수)']],
   },
   en: {
     title: 'ECME Homepage Design Review',
@@ -253,16 +284,63 @@ const I18N = {
     trBtn: 'Translate feedback to English', trBusy: 'Translating…', trShow: 'Show original', trHide: 'Show translation',
     trInfo: 'Claude translates. It asks your permission once and uses your own Claude usage.', trDone: 'Translated · Claude', trOff: 'Translation isn\'t available for this account.',
     trLimit: 'Please try again in a moment. You may have hit a usage limit.', trFail: 'Couldn\'t translate. Please try again.', trNothing: 'Nothing to translate.', trLabel: 'translated',
-    leadShare: 'We are redesigning the homepage of ECME Lab (Prof. Ju-Hyuck Lee, Dept. of Energy Science & Engineering, DGIST). Here are all 59 drafts so far, grouped by direction. Look around, then tell us which drafts and direction you like and what should change. Your input is kept in this browser; at the bottom, use "Send feedback" to copy it and send it to us.',
-    jumpSend: 'Send feedback', savedLocal: 'Saved in this browser', sendTitle: 'Send feedback',
+    leadShare: 'We are redesigning the homepage of ECME Lab (Prof. Ju-Hyuck Lee, Dept. of Energy Science & Engineering, DGIST). Here are all 59 drafts so far, grouped by direction. Star every draft you like (as many as you want), comment on drafts, answer a few questions on color and mood, then press "Send" at the bottom. The three finalists also exist as working sites.', titleShare: 'ECME Homepage Design Vote',
+    jumpSend: 'Send', savedLocal: 'Saved in this browser', sendTitle: 'Send feedback',
     sendLead: 'Enter your name, press "Copy feedback", then paste it into a message or email to the person who shared this page.',
     nameLabel: 'Name', namePh: 'e.g. Jane Doe', previewLabel: 'Preview of what you will send', copyBtn: 'Copy feedback',
     copied: 'Copied. Paste it into a message or email.', copyFail: 'Automatic copy did not work, so the text is selected. Press Ctrl+C (or long-press to copy on a phone).',
     sHead: '[ECME homepage draft feedback]', sName: 'Name', sPicks: '★ Liked drafts', sDir: 'Preferred direction', sFix: 'What to fix', sNotes: 'Comments on drafts', sNone: '(none)',
     dirs: [['calm', 'Calm & credible', 'White page + one accent color (AN, AO, AP, AQ, AM…)'], ['photo', 'Photo & magazine', 'Led by photos and big type (F, AK, AC, M…)'], ['bright', 'Bright & colorful', 'Gradients, glass cards (S, T, U, V, W, AJ…)'], ['geo', 'Geometric & motion', 'Orbit, waveform, lattice motifs (N, P, Q, R, AH…)'], ['dark', 'Dark editorial', 'The current site (C)'], ['other', 'Other', 'Write it below']],
+    candLbl: 'Final 3 candidates (working sites):', candSite: 'Working site ↗', candBadge: 'Finalist',
+    step2Share: 'Star the ones you like ★ — as many as you want', multiHint: '— pick as many as you like',
+    colorQ: 'Which colors do you like?', colorNotePh: 'Anything to add about color (e.g. blue is good but calmer)',
+    moodQ: 'Which mood do you like?', motionQ: 'How much motion (animation)?', firstQ: 'What should appear first on the home page?',
+    goodQ: 'What did you like overall?', goodPh: 'e.g. The card layout in BD, the group-photo hero in BB.',
+    submitBtn: 'Send vote & feedback', resubmitBtn: 'Send again (replaces your last one)', needName: 'Please enter your name.', needAny: 'Star at least one draft or write some feedback.',
+    sending: 'Sending…', sent: 'Received. Thank you! If you edit and send again, only your latest one counts.', sendFail: 'Could not send. Try again in a moment, or use "Copy feedback" below.',
+    sendLeadForm: 'Enter your name and press "Send vote & feedback" to save it to the lab tally. Sending again under the same name replaces your previous one.',
+    loadingRes: 'Loading results…', resFail: 'Could not load results.', publicNote: 'It can take a few minutes for a sent vote to appear.',
+    colorsTally: 'Preferred colors', moodTally: 'Preferred mood', motionTally: 'Preferred motion', firstTally: 'Show first', goodList: 'What people liked',
+    sColors: 'Colors', sMood: 'Mood', sMotion: 'Motion', sFirst: 'Show first', sGood: 'Liked',
+    colors: [['white', 'White + one accent'], ['navy', 'Navy'], ['blue', 'Blues'], ['teal', 'Teal / green'], ['warm', 'Warm (amber, coral, ivory)'], ['pastel', 'Pastel'], ['mono', 'Black & white minimal'], ['grad', 'Gradients / colorful'], ['dark', 'Dark background']],
+    mood: [['clean', 'Clean & professional'], ['friendly', 'Warm & friendly'], ['bold', 'Bold & striking'], ['classic', 'Classic university lab'], ['tech', 'Tech & futuristic'], ['magazine', 'Magazine / photo-led'], ['playful', 'Cute & playful']],
+    motion: [['none', 'Almost none'], ['once', 'Subtle, once on load'], ['some', 'Moderate'], ['rich', 'Lots']],
+    first: [['photo', 'Group photo'], ['research', 'Research areas'], ['news', 'Latest news & awards'], ['pi', 'Professor'], ['pubs', 'Key papers'], ['join', 'Join us / openings'], ['stats', 'Numbers (papers, patents)']],
   },
 };
-const MAX_PICKS = 3;
+const FORM = {
+ "action": "https://docs.google.com/forms/d/e/1FAIpQLSe2vcH1cyvX7PwXj1eTM7Tqlmkr-Nzl2xPrCfVYBUKFFbXp3A/formResponse",
+ "entries": {
+  "name": "entry.1026135619",
+  "notes": "entry.1723568633",
+  "fix": "entry.1337326635",
+  "picks": "entry.1176653429",
+  "dir": "entry.2070277114",
+  "colors": "entry.338476187",
+  "mood": "entry.1994641403",
+  "motion": "entry.1109673477",
+  "first": "entry.1868393580",
+  "good": "entry.175391827"
+ },
+ "csv": "",
+ "columns": {
+  "name": "이름",
+  "notes": "의견",
+  "fix": "고칠 점 · 전체 의견",
+  "picks": "추천 디자인 (복수)",
+  "dir": "선호 방향",
+  "colors": "선호 색감",
+  "mood": "분위기",
+  "motion": "움직임 정도",
+  "first": "첫 화면에 보였으면 하는 것",
+  "good": "좋은 점"
+ },
+ "_notes": "Same Google Form as vote/form.json (13Z9pNeIVBZICjfXPbfn3YElPSjjclrbKhe3Nr4KKQH8). Fill csv with the sheet's publish-to-web CSV link to show the live tally."
+};  // share mode backend: {action, entries:{name,picks,notes,fix,dir,colors,mood,motion,first,good}, csv, columns:{...same keys}}
+const SITE = 'https://dgistecme.github.io/design-preview/';
+const CAND = { Main: 'current', DirectionAV: 'reference', DirectionNA: 'orbit' };  // finalists with full working sites
+const SURVEY = [['colors', true], ['mood', true], ['motion', false], ['first', true]];  // [key, multi]
+const MAX_PICKS = SHARE ? 999 : 3;
 const ITEMS = []; GROUPS.forEach((g, gi) => g.items.forEach((it) => ITEMS.push(Object.assign({ g: gi }, it))));
 const byId = Object.fromEntries(ITEMS.map((it) => [it.id, it]));
 const $ = (id) => document.getElementById(id);
@@ -274,7 +352,7 @@ const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k]) ?? I18N.ko[k] ?? 
 const L = (obj, key) => (lang === 'en' && obj[key + '_en']) ? obj[key + '_en'] : obj[key];
 const shortTitle = (it) => L(it, 'title').replace(it.code + ' · ', '');
 
-let uid = null, db = null, mine = { picks: [], direction: '', dirNote: '', overall: '', notes: {}, name: '' }, all = {}, loadedMine = false, statusKey = 'loading', statusOk = false;
+let uid = null, db = null, mine = { picks: [], direction: '', dirNote: '', overall: '', notes: {}, name: '', colors: [], mood: [], motion: [], first: [], colorNote: '', good: '' }, all = {}, loadedMine = false, statusKey = 'loading', statusOk = false;
 
 function applyLang() {
   document.documentElement.lang = lang;
@@ -282,8 +360,15 @@ function applyLang() {
   document.querySelectorAll('[data-i18n-ph]').forEach((n) => { n.placeholder = t(n.dataset.i18nPh); });
   $('lKo').setAttribute('aria-pressed', lang === 'ko'); $('lEn').setAttribute('aria-pressed', lang === 'en');
   document.title = t('title');
-  if (SHARE) { document.querySelector('.lead').textContent = t('leadShare'); $('jumpRes').textContent = t('jumpSend'); $('jumpRes').href = '#send'; }
-  renderGroups(); renderDirs(); paintMine(); status(statusKey, statusOk); renderMe(); renderResults(); if (SHARE) renderSend();
+  if (SHARE) {
+    document.querySelector('.lead').textContent = t('leadShare'); $('jumpRes').textContent = t('jumpSend'); $('jumpRes').href = '#send';
+    document.title = t('titleShare'); document.querySelector('h1').textContent = t('titleShare');
+    document.querySelector('[data-i18n="step2"]').textContent = t('step2Share');
+    if (FORM) { document.querySelector('[data-i18n="sendLead"]').textContent = t('sendLeadForm'); $('copyBtn').textContent = t('copyBtn'); }
+  }
+  const cb = $('cands'); cb.textContent = '';
+  Object.entries(CAND).forEach(([id, slug]) => { const it = byId[id]; if (!it) return; const a = el('a', 'btn', it.code + ' ' + shortTitle(it) + ' ↗'); a.href = SITE + slug + '/'; a.target = '_blank'; a.rel = 'noopener'; cb.append(a); });
+  renderGroups(); renderDirs(); renderSurvey(); paintMine(); status(statusKey, statusOk); renderMe(); renderResults(); if (SHARE) renderSend();
   if (!$('ov').hidden) paintOvState();
 }
 function setLang(l) { if (l === lang) return; lang = l; try { localStorage.setItem('ecme-review-lang', l); } catch (e) {} applyLang(); }
@@ -304,6 +389,7 @@ function renderGroups() {
       th.onclick = () => openViewer(it.id);
       const b = el('div', 'cbody'); const ti = el('div', 'ctitle');
       ti.append(el('span', 'code', it.code), el('h3', null, shortTitle(it)));
+      if (CAND[it.id]) ti.querySelector('h3').append(el('span', 'cand-badge', t('candBadge')));
       const act = el('div', 'cact');
       const star = el('button', 'tog'); star.dataset.star = it.id; star.onclick = () => togglePick(it.id);
       const nb = el('button', 'tog note'); nb.dataset.noteBtn = it.id;
@@ -312,6 +398,7 @@ function renderGroups() {
       nb.onclick = () => { ta.hidden = !ta.hidden; if (!ta.hidden) ta.focus(); };
       const view = el('button', 'tog', t('view')); view.onclick = () => openViewer(it.id);
       act.append(star, nb, view);
+      if (CAND[it.id]) { const a = el('a', 'tog', t('candSite')); a.href = SITE + CAND[it.id] + '/'; a.target = '_blank'; a.rel = 'noopener'; act.append(a); }
       b.append(ti, el('p', 'cdesc', L(it, 'desc')), act, ta);
       c.append(th, b); grid.append(c);
     });
@@ -328,8 +415,12 @@ function paintMine() {
   ITEMS.forEach((it) => { const ta = $('note-' + it.id); if (ta && document.activeElement !== ta) { ta.value = mine.notes[it.id] || ''; if (ta.value) ta.hidden = false; } });
   const p = $('picks'); p.textContent = ''; p.append(el('span', 'lbl', t('myPicks')));
   mine.picks.forEach((id) => { const it = byId[id]; if (!it) return; const c = el('span', 'chip star'); const a = el('button', null, it.code + ' ' + shortTitle(it)); a.style.color = 'inherit'; a.onclick = () => openViewer(id); const x = el('button', null, '✕'); x.setAttribute('aria-label', L(it, 'title') + ' — ' + t('unpick')); x.onclick = () => togglePick(id); c.append('★', a, x); p.append(c); });
-  for (let k = mine.picks.length; k < MAX_PICKS; k++) p.append(el('span', 'chip empty', t('emptySlot')));
+  if (MAX_PICKS <= 3) for (let k = mine.picks.length; k < MAX_PICKS; k++) p.append(el('span', 'chip empty', t('emptySlot')));
+  else if (!mine.picks.length) p.append(el('span', 'chip empty', t('emptySlot')));
   document.querySelectorAll('input[name="dir"]').forEach((r) => { r.checked = r.value === mine.direction; });
+  SURVEY.forEach(([k]) => document.querySelectorAll('input[name="sv-' + k + '"]').forEach((r) => { r.checked = (mine[k] || []).includes(r.value); }));
+  if (document.activeElement !== $('colorNote')) $('colorNote').value = mine.colorNote || '';
+  if (document.activeElement !== $('good')) $('good').value = mine.good || '';
   if (document.activeElement !== $('dirNote')) $('dirNote').value = mine.dirNote || '';
   if (document.activeElement !== $('overall')) $('overall').value = mine.overall || '';
   if (!$('ov').hidden) paintOvState();
@@ -347,6 +438,19 @@ function renderDirs() {
   const box = $('dirs'); box.textContent = '';
   t('dirs').forEach(([v, tt, s]) => { const l = el('label', 'opt'); const r = el('input'); r.type = 'radio'; r.name = 'dir'; r.value = v; r.id = 'dir-' + v; r.checked = mine.direction === v; r.onchange = () => { mine.direction = v; queueSave(); }; const sp = el('span'); sp.append(el('b', null, tt), el('small', null, s)); l.append(r, sp); box.append(l); });
 }
+function renderSurvey() {
+  SURVEY.forEach(([k, multi]) => {
+    const box = $('opt-' + k); box.textContent = '';
+    t(k).forEach(([v, label]) => {
+      const l = el('label', 'opt'); const r = el('input'); r.type = multi ? 'checkbox' : 'radio'; r.name = 'sv-' + k; r.value = v;
+      r.checked = (mine[k] || []).includes(v);
+      r.onchange = () => { const cur = new Set(multi ? (mine[k] || []) : []); if (r.checked) cur.add(v); else cur.delete(v); mine[k] = [...cur]; queueSave(); };
+      l.append(r, el('span', null, label)); box.append(l);
+    });
+  });
+}
+$('colorNote').oninput = (e) => { mine.colorNote = e.target.value; queueSave(); };
+$('good').oninput = (e) => { mine.good = e.target.value; queueSave(); };
 $('dirNote').oninput = (e) => { mine.dirNote = e.target.value; queueSave(); };
 $('overall').oninput = (e) => { mine.overall = e.target.value; queueSave(); };
 async function renderMe() {
@@ -364,7 +468,7 @@ function status(key, ok) { statusKey = key; statusOk = !!ok; const s = $('save')
 function queueSave() { status('saving'); clearTimeout(saveTimer); saveTimer = setTimeout(save, 700); }
 async function save() {
   if (SHARE) { try { localStorage.setItem('ecme-review', JSON.stringify(mine)); } catch (e) {} status('savedLocal', true); renderSend(); return; }
-  const body = { picks: mine.picks.slice(0, MAX_PICKS), direction: mine.direction, dirNote: mine.dirNote.slice(0, 2000), overall: mine.overall.slice(0, 4000), notes: mine.notes, updatedAt: new Date().toISOString() };
+  const body = { picks: mine.picks.slice(0, MAX_PICKS), direction: mine.direction, dirNote: mine.dirNote.slice(0, 2000), overall: mine.overall.slice(0, 4000), notes: mine.notes, colors: mine.colors, mood: mine.mood, motion: mine.motion, first: mine.first, colorNote: (mine.colorNote || '').slice(0, 2000), good: (mine.good || '').slice(0, 4000), updatedAt: new Date().toISOString() };
   try { localStorage.setItem('ecme-review', JSON.stringify(body)); } catch (e) {}
   if (!db || !uid) { status(uid === null && db ? 'localNoId' : 'localOnly'); return; }
   try { await db.doc('reviews/' + uid).set(body); status('saved', true); }
@@ -417,16 +521,16 @@ function commentP(text) { const s = shown(text); const p = el('p', null, s.text)
 /* ---------- results ---------- */
 let resultsSeq = 0;
 async function renderResults() {
-  if (SHARE) return;
+  if (SHARE && !(FORM && FORM.csv)) return;
   const seq = ++resultsSeq;
-  const docs = Object.entries(all).filter(([, d]) => d && ((d.picks && d.picks.length) || d.direction || d.overall || (d.notes && Object.keys(d.notes).length)));
-  let ps = {}; if (docs.length) { try { ps = await window.claude.user.profiles(docs.map(([id]) => id)); } catch (e) {} }
+  const docs = Object.entries(all).filter(([, d]) => d && ((d.picks && d.picks.length) || d.direction || d.overall || d.good || SURVEY.some(([k]) => (d[k] || []).length) || (d.notes && Object.keys(d.notes).length)));
+  let ps = {}; if (docs.length && !SHARE) { try { ps = await window.claude.user.profiles(docs.map(([id]) => id)); } catch (e) {} }
   if (seq !== resultsSeq) return;  // a newer render started while names were loading
   $('pcount').textContent = docs.length ? t('participants', { n: docs.length }) : '';
   paintTrButton();
   const box = $('resbody'); box.textContent = '';
   if (!docs.length) { box.append(el('p', 'empty-note', db ? t('noneYet') : t('noShared'))); return; }
-  const who = (id) => { const p = ps[id] || {}; const m = el('span', 'meta'); if (p.avatarUrl) { const i = el('img'); i.src = p.avatarUrl; i.alt = ''; m.append(i); } m.append(el('span', null, p.name || t('noName'))); return m; };
+  const who = (id) => { const p = ps[id] || {}; const m = el('span', 'meta'); if (p.avatarUrl) { const i = el('img'); i.src = p.avatarUrl; i.alt = ''; m.append(i); } m.append(el('span', null, SHARE ? id : (p.name || t('noName')))); return m; };
 
   const picks = {}; docs.forEach(([, d]) => (d.picks || []).forEach((id) => { if (byId[id]) picks[id] = (picks[id] || 0) + 1; }));
   const pk = Object.entries(picks).sort((a, b) => b[1] - a[1]);
@@ -449,7 +553,16 @@ async function renderResults() {
   const l4 = el('ul', 'cmts'); let any = false;
   ITEMS.forEach((it) => docs.forEach(([id, d]) => { const x = d.notes && d.notes[it.id]; if (!x) return; any = true; const li = el('li'); const m = who(id); const a = el('button', 'motion', it.code); a.style.border = '0'; a.onclick = () => openViewer(it.id); m.prepend(a); li.append(m, commentP(x)); l4.append(li); }));
   s4.append(any ? l4 : el('p', 'empty-note', t('nothing')));
-  box.append(s1, s2, s3, s4);
+  const extra = SURVEY.map(([k]) => {
+    const cnt = {}; docs.forEach(([, d]) => (d[k] || []).forEach((v) => { cnt[v] = (cnt[v] || 0) + 1; }));
+    const s = el('div', 'tally'); s.append(el('h3', null, t(k + 'Tally'))); const mx = Math.max(1, ...Object.values(cnt));
+    t(k).forEach(([v, label]) => { const n = cnt[v] || 0; const r = el('div', 'trow'); const tr = el('div', 'track'); const f = el('div', 'fill'); f.style.width = (n / mx * 100) + '%'; tr.append(f); r.append(el('span', 'name', label), tr, el('span', 'n', String(n))); s.append(r); });
+    return s;
+  });
+  const s5 = el('div'); s5.append(el('h3', null, t('goodList'))); const l5 = el('ul', 'cmts');
+  docs.forEach(([id, d]) => { const parts = [d.good, d.colorNote].filter((x) => x && x.trim()); if (!parts.length) return; const li = el('li'); li.append(who(id)); parts.forEach((x) => li.append(commentP(x))); l5.append(li); });
+  s5.append(l5.children.length ? l5 : el('p', 'empty-note', t('nothing')));
+  box.append(s1, s2, ...extra, s5, s3, s4);
 }
 
 /* ---------- viewer overlay ---------- */
@@ -515,10 +628,72 @@ function composeFeedback() {
   lines.push(t('sPicks') + ': ' + (mine.picks.length ? mine.picks.map((id) => byId[id] ? byId[id].code + ' ' + shortTitle(byId[id]) : id).join(', ') : t('sNone')));
   const d = t('dirs').find((x) => x[0] === mine.direction);
   lines.push(t('sDir') + ': ' + (d ? d[1] : t('sNone')) + (mine.dirNote ? ' / ' + mine.dirNote : ''));
+  SURVEY.forEach(([k]) => { const labs = (mine[k] || []).map((v) => (t(k).find((x) => x[0] === v) || [v, v])[1]); const key = 's' + k[0].toUpperCase() + k.slice(1); lines.push(t(key) + ': ' + (labs.length ? labs.join(', ') : t('sNone')) + (k === 'colors' && mine.colorNote ? ' / ' + mine.colorNote : '')); });
+  lines.push(t('sGood') + ': ' + (mine.good ? mine.good : t('sNone')));
   lines.push(t('sFix') + ': ' + (mine.overall ? mine.overall : t('sNone')));
   const notes = ITEMS.filter((it) => mine.notes[it.id]);
   if (notes.length) { lines.push(t('sNotes') + ':'); notes.forEach((it) => lines.push('- ' + it.code + ' ' + shortTitle(it) + ': ' + mine.notes[it.id].replace(/\n+/g, ' / '))); }
   return lines.join('\n');
+}
+/* ---------- share mode: Google Form backend ---------- */
+const KO = I18N.ko;
+const koLab = (k, keys) => (keys || []).map((v) => (KO[k].find((x) => x[0] === v) || [v, v])[1]);
+const byCode = Object.fromEntries(ITEMS.map((it) => [it.code, it.id]));
+function formFields() {
+  const d = KO.dirs.find((x) => x[0] === mine.direction);
+  return {
+    name: (mine.name || '').trim(),
+    picks: mine.picks.filter((id) => byId[id]).map((id) => byId[id].title).join(' | '),
+    notes: ITEMS.filter((it) => mine.notes[it.id]).map((it) => '[' + it.code + '] ' + mine.notes[it.id].replace(/\n+/g, ' / ')).join('\n'),
+    dir: (d ? d[1] : '') + (mine.dirNote ? ' / ' + mine.dirNote : ''),
+    colors: koLab('colors', mine.colors).join(', ') + (mine.colorNote ? ' / ' + mine.colorNote : ''),
+    mood: koLab('mood', mine.mood).join(', '), motion: koLab('motion', mine.motion).join(', '), first: koLab('first', mine.first).join(', '),
+    good: mine.good || '', fix: mine.overall || '',
+  };
+}
+$('submitBtn').onclick = async () => {
+  const msg = $('submitMsg'); msg.classList.remove('ok');
+  const f = formFields();
+  if (!f.name) { msg.textContent = t('needName'); $('rname').focus(); return; }
+  if (!f.picks && !f.notes && !f.dir && !f.colors && !f.mood && !f.motion && !f.first && !f.good && !f.fix) { msg.textContent = t('needAny'); return; }
+  const fd = new FormData(); Object.entries(FORM.entries).forEach(([k, entry]) => { if (f[k]) fd.append(entry, f[k]); });
+  $('submitBtn').disabled = true; msg.textContent = t('sending');
+  try { await fetch(FORM.action, { method: 'POST', mode: 'no-cors', body: fd }); msg.textContent = t('sent') + (FORM.csv ? ' ' + t('publicNote') : ''); msg.classList.add('ok'); $('submitBtn').textContent = t('resubmitBtn'); if (FORM.csv) setTimeout(loadCsv, 8000); }
+  catch (e) { msg.textContent = t('sendFail'); }
+  $('submitBtn').disabled = false;
+};
+function parseCsv(text) {
+  const rows = [], row = []; let cell = '', q = false;
+  for (let i = 0; i < text.length; i++) { const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true; else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row.splice(0)); cell = ''; }
+    else cell += c; }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter((r) => r.some((x) => x !== ''));
+}
+function fromKo(k, text) { const [labs, ...rest] = (text || '').split(' / '); const keys = labs.split(', ').map((s) => (KO[k].find((x) => x[1] === s.trim()) || [])[0]).filter(Boolean); return { keys, note: rest.join(' / ') }; }
+async function loadCsv() {
+  const box = $('resbody'); if (!Object.keys(all).length) { box.textContent = ''; box.append(el('p', 'empty-note', t('loadingRes'))); }
+  try {
+    const res = await fetch(FORM.csv + (FORM.csv.includes('?') ? '&' : '?') + '_=' + Date.now(), { cache: 'no-store' });
+    const rows = parseCsv(await res.text()); const head = rows.shift() || [];
+    const col = Object.fromEntries(Object.entries(FORM.columns).map(([k, h]) => [k, head.indexOf(h)]));
+    const get = (r, k) => (col[k] >= 0 ? r[col[k]] || '' : '').trim();
+    const next = {};
+    rows.forEach((r) => {
+      const name = get(r, 'name'); if (!name) return;
+      const notes = {}; get(r, 'notes').split('\n').forEach((ln) => { const m = ln.match(/^\[([^\]]+)\]\s*(.*)$/); if (m && byCode[m[1]] && m[2]) notes[byCode[m[1]]] = m[2]; });
+      const dir = fromKo('dirs', get(r, 'dir')), col2 = fromKo('colors', get(r, 'colors'));
+      next[name] = {
+        picks: get(r, 'picks').split(' | ').map((s) => byCode[s.split(' · ')[0].trim()]).filter(Boolean), notes,
+        direction: dir.keys[0] || '', dirNote: dir.note, colors: col2.keys, colorNote: col2.note,
+        mood: fromKo('mood', get(r, 'mood')).keys, motion: fromKo('motion', get(r, 'motion')).keys, first: fromKo('first', get(r, 'first')).keys,
+        good: get(r, 'good'), overall: get(r, 'fix'),
+      };
+    });
+    all = next; renderResults();
+  } catch (e) { box.textContent = ''; box.append(el('p', 'empty-note', t('resFail'))); }
 }
 function renderSend() { if (!SHARE) return; if (document.activeElement !== $('rname')) $('rname').value = mine.name || ''; $('sendText').value = composeFeedback(); }
 $('rname').oninput = (e) => { mine.name = e.target.value; queueSave(); };
@@ -533,7 +708,7 @@ try { const loc = JSON.parse(localStorage.getItem('ecme-review') || 'null'); if 
 applyLang();
 const startId = location.hash.slice(1); if (byId[startId]) openViewer(startId);
 window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (byId[h] && (cur < 0 || ITEMS[cur].id !== h || $('ov').hidden)) openViewer(h); });
-if (SHARE) { $('resultsWrap').hidden = true; $('sendWrap').hidden = false; status('savedLocal', true); renderSend(); }
+if (SHARE) { $('resultsWrap').hidden = !(FORM && FORM.csv); $('sendWrap').hidden = false; $('submitBtn').hidden = !FORM; status('savedLocal', true); renderSend(); if (FORM && FORM.csv) loadCsv(); }
 (async () => {
   if (SHARE) return;
   try { uid = window.claude && window.claude.user ? await window.claude.user.id() : null; } catch (e) { uid = null; }
@@ -544,7 +719,7 @@ if (SHARE) { $('resultsWrap').hidden = true; $('sendWrap').hidden = false; statu
     if (uid && !loadedMine) {
       loadedMine = true;
       const srv = all[uid];
-      if (srv) { mine = { picks: srv.picks || [], direction: srv.direction || '', dirNote: srv.dirNote || '', overall: srv.overall || '', notes: Object.assign({}, srv.notes || {}) }; paintMine(); status('saved', true); }
+      if (srv) { mine = { picks: srv.picks || [], direction: srv.direction || '', dirNote: srv.dirNote || '', overall: srv.overall || '', notes: Object.assign({}, srv.notes || {}), colors: srv.colors || [], mood: srv.mood || [], motion: srv.motion || [], first: srv.first || [], colorNote: srv.colorNote || '', good: srv.good || '' }; paintMine(); status('saved', true); }
       else if (mine.picks.length || mine.overall || mine.direction || Object.keys(mine.notes).length) save();
       else status('autoSave');
     } else if (!uid && !loadedMine) { loadedMine = true; status('localNoId'); }
