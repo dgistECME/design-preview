@@ -69,6 +69,7 @@ footer { padding-block: 36px 56px; color: var(--mute); font-size: 13px; }
 <header class="top wrap">
   <div class="toprow"><h1 data-t="title"></h1><span class="seg" role="group" aria-label="Language / 언어"><button id="lKo" lang="ko">한국어</button><button id="lEn" lang="en">English</button></span></div>
   <p class="lead" data-t="lead"></p>
+  <p class="lead"><a id="allDrafts" class="btn" target="_blank" rel="noopener" data-t="allDrafts"></a> <span data-t="allDraftsNote" style="color:var(--mute);font-size:13px"></span></p>
   <div class="toprow"><div class="who" id="who"></div><span class="status" id="status"></span></div>
 </header>
 
@@ -99,7 +100,7 @@ const PUBLIC = true;   // public copy on GitHub Pages: no claude.ai storage
 const FORM = {"action": "https://docs.google.com/forms/d/e/1FAIpQLSe2vcH1cyvX7PwXj1eTM7Tqlmkr-Nzl2xPrCfVYBUKFFbXp3A/formResponse", "entries": {"name": "entry.1026135619", "vote": "entry.1739097903", "comment": "entry.1723568633", "overall": "entry.1337326635"}, "options": {"current": "1 Bold Editorial", "reference": "2 Research First", "orbit": "3 Orbit"}, "csv": "", "columns": {"name": "이름", "vote": "투표", "comment": "의견", "overall": "전체 의견"}, "_notes": "Google Form 13Z9pNeIVBZICjfXPbfn3YElPSjjclrbKhe3Nr4KKQH8 (owner: user's Google account). Responses sheet 1MeupGFn0xmstUDDHUgwp3oDYScCNKpTm2EXy5sRDmwU gid 2060194984. Fill csv with the 'publish to web' CSV link to show the live tally on the public page."};        // public copy backend: {action, entries:{name,vote,comment,overall}, options:{current,reference,orbit}, csv, columns:{name,vote,comment,overall}}
 const T = {
   ko: {
-    title: 'ECME 홈페이지 최종 투표', lead: '연구실 홈페이지 후보 3안입니다. 각 사이트를 열어 메뉴와 페이지를 둘러본 뒤, 가장 좋은 안에 투표해 주세요. 한 사람당 한 표이며 언제든 바꿀 수 있습니다. 투표와 의견은 자동 저장되고 아래 "투표 현황"에 바로 반영됩니다.',
+    title: 'ECME 홈페이지 최종 투표', lead: '연구실 홈페이지 후보 3안입니다. 각 사이트를 열어 메뉴와 페이지를 둘러본 뒤, 가장 좋은 안에 투표해 주세요. 한 사람당 한 표이며 언제든 바꿀 수 있습니다. 투표와 의견은 연구실 집계표에 저장됩니다.',
     names: { current: ['1 · 현재 적용 중', 'Bold Editorial', ['짙은 남색 + 하늘색 포인트', '큰 사진 배너 첫 화면', '움직임: 스크롤 시 부드럽게 나타남']],
              reference: ['2 · 레퍼런스형', 'Research First', ['흰 바탕 + 포인트 색 하나', '연구 분야 5개가 먼저 보임', '움직임: 처음 한 번만, 반복 없음']],
              orbit: ['3 · Orbit형', 'Orbit', ['흰 바탕 + 궤도·원 모티프', '단체사진 중심, 연구 분야가 궤도 위에', '움직임: 홈의 노드 하나만 천천히 회전']] },
@@ -110,10 +111,11 @@ const T = {
     fbNote: '공유 저장소를 쓸 수 없는 환경이에요. 아래 내용을 복사해서 보내 주세요.', copy: '투표 내용 복사', copied: '복사됐어요. 카톡이나 메일에 붙여넣어 보내 주세요.', copyFail: '자동 복사가 안 돼서 내용을 선택해 두었어요. Ctrl+C로 복사해 주세요.',
     head: '[ECME 홈페이지 최종 투표]', lVote: '투표', lCmt: '의견', lAll: '전체 의견', lNone: '(없음)',
     nameQ: '이름 (투표 집계용)', submit: '투표 보내기', resubmit: '다시 보내기 (수정)', needName: '이름을 적어 주세요.', needVote: '먼저 안 하나를 골라 주세요.', sending: '보내는 중…', sent: '투표가 접수됐어요. 고마워요!', sendFail: '보내지 못했어요. 잠시 후 다시 눌러 주세요.', refresh: '↻ 새로고침', loadingRes: '집계 불러오는 중…', resFail: '집계를 불러오지 못했어요. 새로고침을 눌러 주세요.', publicNote: '보낸 뒤 집계에 보이기까지 1분 정도 걸릴 수 있어요.',
+    allDrafts: '전체 디자인 초안 보기 ↗', allDraftsNote: '후보 3안 외에 지금까지 만든 초안 전부 (참고용, 투표는 아래 3안 중에서)',
     footer: 'ECME Lab · DGIST 에너지공학과 · 사이트 둘러보기: ' + BASE,
   },
   en: {
-    title: 'ECME Homepage: Final Vote', lead: 'Three candidates for the lab homepage. Open each site, browse its menus and pages, then vote for the one you like best. One vote per person; you can change it anytime. Votes and comments save automatically and show up under "Results" below.',
+    title: 'ECME Homepage: Final Vote', lead: 'Three candidates for the lab homepage. Open each site, browse its menus and pages, then vote for the one you like best. One vote per person; you can change it anytime. Votes and comments are saved to the lab's tally.',
     names: { current: ['1 · Live now', 'Bold Editorial', ['Dark navy + sky-blue accent', 'Large photo banner up top', 'Motion: gentle reveal on scroll']],
              reference: ['2 · Reference style', 'Research First', ['White + one accent color', 'Research areas shown first', 'Motion: once on load, no loops']],
              orbit: ['3 · Orbit style', 'Orbit', ['White + orbit/circle motif', 'Group photo at the center, research on the rings', 'Motion: one slow node on the home page']] },
@@ -124,9 +126,11 @@ const T = {
     fbNote: 'Shared storage isn\'t available here. Copy the text below and send it.', copy: 'Copy my vote', copied: 'Copied. Paste it into a message or email.', copyFail: 'Automatic copy did not work, so the text is selected. Press Ctrl+C.',
     head: '[ECME homepage final vote]', lVote: 'Vote', lCmt: 'Comment', lAll: 'Overall', lNone: '(none)',
     nameQ: 'Name (for the tally)', submit: 'Send my vote', resubmit: 'Send again (update)', needName: 'Please enter your name.', needVote: 'Please pick one candidate first.', sending: 'Sending…', sent: 'Your vote is in. Thank you!', sendFail: 'Could not send. Please try again in a moment.', refresh: '↻ Refresh', loadingRes: 'Loading results…', resFail: 'Could not load results. Press refresh.', publicNote: 'It can take about a minute for a sent vote to appear in the tally.',
+    allDrafts: 'See all design drafts ↗', allDraftsNote: 'Every draft made so far, for reference (vote among the three below)',
     footer: 'ECME Lab · Dept. of Energy Science & Engineering, DGIST · Browse the sites: ' + BASE,
   },
 };
+document.getElementById('allDrafts').href = BASE + 'drafts/';
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
 let lang = 'ko'; try { lang = localStorage.getItem('ecme-vote-lang') || ((navigator.language || 'ko').toLowerCase().startsWith('ko') ? 'ko' : 'en'); } catch (e) {}
